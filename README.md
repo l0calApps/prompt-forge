@@ -1,115 +1,346 @@
-# Prompt Forge v3
+# Prompt Forge v4
 
-A Dockerized AI prompt engineering workstation. Type a rough idea in **Quick mode** for an instant reformat, or switch to **Structured mode** to build a precision prompt using industry frameworks — powered entirely by your local Ollama instance.
-
----
-
-## Architecture
-
-```
-Browser (port 3030)
-    │
-    ▼
-prompt-forge container  (Node 20 Alpine / Express)
-    ├── GET  /api/health    → liveness probe
-    ├── GET  /api/models    → proxies Ollama /api/tags
-    ├── POST /api/analyze   → non-streaming: extracts fields from raw intent
-    └── POST /api/reformat  → SSE streaming: Quick | Structured | Visual
-          ├── mode: quick             → single-shot reformat
-          ├── mode: structured        → text framework assembly
-          └── mode: visual
-                ├── visualType: image → platform-specific image prompt
-                └── visualType: video → platform-specific video prompt
-    │
-    ▼
-Ollama (host or container, port 11434)
-```
+A Dockerized AI prompt engineering workstation powered entirely by your local Ollama instance. No external APIs. No keys required.
 
 ---
 
-## Prompt Frameworks Supported
+## Features
 
-### COSTAR — Context · Objective · Style · Tone · Audience · Response Format
-Full behavioral control. Ideal for business, technical documentation, instructional, or content prompts where tone and output shape both matter.
-
-### RISEN — Role · Instructions · Steps · End Goal · Narrowing
-Agentic, task-driven. Best when you need a clear expert persona plus a scoped, constrained deliverable.
-
-### RTF — Role · Task · Format
-Lean and fast. Use when scope is narrow and the output format is well-defined. Best starting point for code generation.
-
-### Chain of Thought (CoT) — Role · Problem · Reasoning Hint · Output Format
-Forces the LLM to reason step-by-step before answering. Dramatically improves accuracy on multi-step problems, debugging, and logic tasks.
-
-### Few-Shot — Role · Task · Example Input · Example Output · Format
-Shows the model what "good" looks like before asking it to generalize. Essential for consistent tone, classification, or repetitive transformation tasks.
-
-### ReAct — Role · Problem · Available Actions · Output Format
-Reasoning + Acting. The LLM alternates `Thought → Action → Observation` loops. Best for agentic, tool-using scenarios.
-
----
-
-## Modes
-
-### Quick
-Raw text → optimized prompt. Five styles: Precise, Step-by-Step, Concise, Creative, Debug.
-
-### Structured — Text Frameworks
-| Framework | Best for |
+| Feature | Description |
 |---|---|
-| COSTAR | Business, content, instructional — full behavioral control |
-| RISEN | Agentic, task-driven — clear persona + scoped constraints |
-| RTF | Lean code generation, narrow-scope tasks |
-| Chain of Thought | Complex multi-step reasoning |
-| Few-Shot | Consistent output, classification, transformation |
-| ReAct | Agentic Thought/Action/Observation loops |
-
-### Visual — Image (6 platforms)
-Universal · Midjourney · DALL-E 3 · SD / Auto1111 · Flux · Firefly
-
-### Visual — Video (6 platforms)
-Universal · Sora · Runway Gen-3 · Pika · Kling · Luma
+| **Quick Mode** | Reformat rough text into an optimized prompt in seconds |
+| **Structured Mode** | Build prompts using 12 professional frameworks with Auto-Fill |
+| **Visual Mode** | Generate prompts for 6 image and 6 video AI generators |
+| **Dark / Light Mode** | Toggleable theme with CSS variable design tokens |
+| **Spanish Output (EN/ES)** | Full Spanish output across all modes and Auto-Fill |
+| **Token History** | Sortable table of every forge operation with token counts |
+| **Event Log** | Real-time debug log of all system events |
+| **Clipboard Fallback** | Works across all browsers including iOS Safari, macOS, Android |
+| **Mobile Responsive** | Touch-optimized, stacked layout, min 44px touch targets |
+| **\*-instruct Default** | Auto-selects the first instruct model from Ollama |
 
 ---
+## Supported Frameworks (12)
 
-## Language Selection
-
-An **EN / ES** toggle in the action bar controls output language for all modes and Auto-Fill.
-
-- **EN (default):** All output in English.
-- **ES:** All output in Spanish. For Visual modes, platform-specific technical syntax terms (e.g. `--ar`, `--v`, `masterpiece`, `dolly`, `pan`) remain in English because AI image/video generators require them as-is.
-
-The selected language is sent as `outputLang` in every `/api/reformat` and `/api/analyze` request. On the server, `addLangInstruction()` appends a Spanish language directive to the assembled system prompt when `outputLang === 'es'`.
+### Classic
+| Framework | Acronym Meaning | Best For |
+|---|---|---|
+| COSTAR | Context · Objective · Style · Tone · Audience · Response Format | Full-stack prompt design, content, business |
+| RISEN | Role · Input · Scenario · Expectation · Nuance | Complex projects, multi-perspective analysis |
+| RTF | Role · Task · Format | Narrow-scope, lean, well-defined output tasks |
+### Persona & Structure
+| Framework | Acronym Meaning                                                | Best For                                         |
+| --------- | -------------------------------------------------------------- | ------------------------------------------------ |
+| CRISPE    | Capacity/Role · Insight · Statement · Personality · Experiment | Distinct AI personas, iterative exploration      |
+| RACE      | Role · Action · Tactic · Expectation                           | Daily tasks, emails, high-volume repetitive work |
+| CARE      | Context · Action · Result · Example                            | Success through actionable concrete examples     |
+### Reasoning
+| Framework              | Acronym Meaning                                      | Best For                                      |
+| ---------------------- | ---------------------------------------------------- | --------------------------------------------- |
+| Chain of Thought (CoT) | Role · Problem · Reasoning Hint · Output Format      | Step-by-step logical reasoning                |
+| Tree of Thoughts (ToT) | Role · Problem · Thought Paths · Evaluation · Output | Parallel reasoning, multi-solution evaluation |
+| ReAct                  | Role · Problem · Available Actions · Output Format   | AI agents with tool interaction loops         |
+### Focused
+| Framework | Acronym Meaning | Best For |
+|---|---|---|
+| APE | Action · Purpose · Expectation | Rapid, directive tasks with clear outcomes |
+| Five S Model | Set Scene · Specify · Simplify · Structure · Share Feedback | Teachable, iterable enterprise/education use |
+| Few-Shot | Role · Task · Example Input/Output · Format | Consistent tone and transformation patterns |
 
 ---
+## Visual Platforms
 
-## Token Counter
+**Image:** Universal · Midjourney · DALL-E 3 · SD/Auto1111 · Flux · Adobe Firefly
 
-A live counter at the bottom of the output panel shows **approximate tokens** and **characters** as the prompt streams in. Tokens are estimated using the standard ~4 chars/token approximation. Resets to zero when the output is cleared.
+**Video:** Universal · Sora · Runway Gen-3 · Pika · Kling · Luma Dream Machine
 
 ---
-
 ## Quick Start
 
+### Prerequisites
+- **Docker** and **Docker Compose**
+- **Ollama** running locally with at least one model pulled
+
 ```bash
+# Pull a recommended instruct model
+ollama pull llama3.2-instruct
+# or
+ollama pull mistral
+```
+### Setup
+```bash
+# 1. Create the project directory
 mkdir prompt-forge && cd prompt-forge
-# place all files from this document inside
+
+# 2. Place these files in the directory:
+#    docker-compose.yml
+#    Dockerfile
+#    package.json
+#    server.js
+#    public/index.html
+
+# 3. Build and start
 docker compose up -d --build
+
+# 4. Open in browser
 open http://localhost:3030
 ```
 
 ---
-
-## Connecting to Ollama
+## Configuration
+### Ollama Connection
 
 Edit `OLLAMA_URL` in `docker-compose.yml`:
 
 | Setup | Value |
 |---|---|
-| Host machine / Docker Desktop (Mac or Win) | `http://host.docker.internal:11434` *(default)* |
-| Linux Docker Engine (host machine) | same + `extra_hosts` already set |
-| Ollama in named Docker network | `http://<container-name>:11434` + uncomment `networks:` |
-| Remote IP | `http://192.168.x.x:11434` |
+| Host machine / Docker Desktop (Mac, Windows) | `http://host.docker.internal:11434` *(default)* |
+| Linux Docker Engine | Same value — `extra_hosts` entry handles this |
+| Ollama in a named Docker network | `http://<container-name>:11434` + uncomment `networks:` |
+| Remote machine | `http://192.168.x.x:11434` |
+### Port
+
+Default: `3030`. Change with `PORT` environment variable in `docker-compose.yml`.
+
+---
+## Usage Guide
+### Quick Mode
+1. Type your rough request in the text area
+2. Select an output style (Precise / Step-by-Step / Concise / Creative / Debug)
+3. Press **Forge Prompt** or `Ctrl+Enter` / `Cmd+Enter`
+### Structured Mode
+1. Enter your raw intent in the top field
+2. Select a framework from the dropdown
+3. Click **Auto-Fill** to have the model populate fields from your intent, OR fill fields manually
+4. Press **Forge Prompt**
+### Visual Mode
+1. Choose **Image** or **Video**
+2. Select a target platform
+3. Enter your raw visual intent
+4. Click **Auto-Fill** or fill fields manually
+5. Press **Forge Prompt**
+### Language Toggle (EN / ES)
+Select **EN** or **ES** in the action bar before forging. All output — including Auto-Fill field values — will be in the selected language. For visual platforms, technical syntax keywords (e.g. `--ar`, `masterpiece`) remain in English regardless of language selection.
+### Token History
+Click the **⧖** button in the header to open the token history drawer. Columns are sortable by clicking headers. Click **Clear** to reset.
+### Event Log
+Click the **▦** button in the header to open the event log. All forge operations, model changes, errors, and clipboard events are logged in real time with timestamps and severity levels (INFO / SUCCESS / WARN / ERROR).
+### Dark / Light Mode
+Click the **☀ / ☾** button in the header to toggle. Your preference is saved to `localStorage`.
+
+---
+## Clipboard Behavior
+
+Copy uses a two-method fallback chain:
+
+1. **Clipboard API** (`navigator.clipboard.writeText`) — works on HTTPS and localhost
+2. **execCommand fallback** — works without HTTPS; includes iOS Safari-specific selection handling
+
+If both methods fail, a toast guides you to select text manually.
+
+---
+## Model Selection
+
+On load, Prompt Forge automatically selects the first model whose name matches `/-instruct/i`. If no instruct model is found, the first model in the list is selected. You can change the model at any time using the dropdown in the header.
+
+---
+## Troubleshooting
+
+| Problem | Solution |
+|---|---|
+| "Cannot reach Ollama" | Verify Ollama is running: `curl http://localhost:11434/api/tags` |
+| No models in dropdown | Pull a model: `ollama pull llama3.2` |
+| Auto-Fill returns empty JSON | Use a 7B+ instruct-tuned model (llama3, mistral, qwen2.5) |
+| Copy fails on mobile | The fallback method is attempted automatically; if all fails, long-press text |
+| Container won't start | Check Docker logs: `docker compose logs prompt-forge` |
+
+---
+## Docker Commands
+
+```bash
+# Start
+docker compose up -d
+
+# Rebuild after code changes
+docker compose up -d --build
+
+# Stop
+docker compose down
+
+# View logs
+docker compose logs -f prompt-forge
+
+# Shell into container
+docker exec -it prompt-forge sh
+```
+
+---
+
+## Design Decisions
+
+### Architecture
+The application is a single Docker container running an Express.js server on Node 20 Alpine. The server acts as a secure proxy to Ollama — all LLM calls originate server-side, keeping the Ollama endpoint unexposed to the browser. The client communicates with the server via two endpoints:
+
+- `POST /api/analyze` — non-streaming JSON extraction for Auto-Fill
+- `POST /api/reformat` — Server-Sent Events streaming for all forge operations
+
+### Why SSE over WebSockets?
+SSE is unidirectional (server → client), which perfectly matches the streaming use case. It requires no special headers, works through standard HTTP/1.1, and reconnects automatically on dropped connections. WebSockets would add unnecessary bidirectional overhead.
+
+### Language System
+A single `addLangInstruction(systemPrompt, outputLang, isVisual)` helper appends a Spanish directive as the last bullet in any assembled system prompt. Appending (not prepending) ensures the language instruction doesn't override early structural rules but takes precedence as a final constraint. The `isVisual` flag adds an exception clause preserving English for AI generator syntax keywords.
+
+### Clipboard Fallback Chain
+Three layers:
+1. `navigator.clipboard.writeText()` — modern, requires HTTPS or localhost
+2. `document.execCommand('copy')` — deprecated but universally supported; requires DOM manipulation
+3. iOS-specific `Range + setSelectionRange(0, 999999)` within layer 2
+
+The fallback is transparent to the user — the copy button still shows ✓ regardless of method used.
+
+### Token Estimation
+Uses `Math.ceil(text.length / 4)` — the standard GPT-family approximation. This is an estimate, not an exact count. For Ollama models (primarily Llama family), the actual tokenizer may yield slightly different results, but the ~4 chars/token ratio is accurate enough for usage tracking purposes.
+
+### Model Auto-Selection
+Matches `/-instruct/i` — a case-insensitive regex that catches `llama3.2-instruct`, `mistral-instruct`, `qwen2.5-instruct`, etc. If no instruct model is found, the first model is selected. This is a UX default only — the user can select any model at any time.
+
+### Mobile Layout Strategy
+Uses CSS Grid `1fr 1fr` on desktop, switching to `flex-direction: column` with `max-height: 45vh` on the left panel below 768px. All interactive elements meet the WCAG 2.5.5 / Apple HIG minimum touch target of 44×44px. The action bar wraps on narrow viewports.
+
+### Theme System
+CSS custom properties scoped to `[data-theme="dark"]` and `[data-theme="light"]` on `<html>`. Light mode uses darker accent colors (e.g. `#4a5500` instead of `#e8ff47`) to maintain WCAG AA contrast ratios on light backgrounds. Theme preference is persisted to `localStorage`.
+
+### Framework Dropdown vs. Tabs
+12 frameworks exceed what fits in a single-row tab bar, especially on mobile. A grouped `<select>` with `<optgroup>` dividers organizes frameworks by category (Classic / Persona & Structure / Reasoning / Focused) and works natively on all devices and screen sizes.
+
+### Event Log
+Entries are stored in a JS array (max 300, newest-first) and rendered into a `drawer-bottom` panel. Each entry has a timestamp, severity level, and message. The log is runtime-only — it resets on page refresh. This is intentional: it's a debugging tool for the current session, not persistent storage.
+
+---
+
+## Framework Reference
+
+### COSTAR
+**Fields:** Context · Objective · Style · Tone · Audience · Response Format
+
+**Use when:** You need full behavioral control — specifying not just what to produce but how to communicate, to whom, and in what format. Ideal for content creation, business communications, and instructional design.
+
+**Example use case:** Drafting a weekly infrastructure cost digest email for non-technical managers.
+
+---
+
+### RISEN
+**Fields:** Role · Input · Scenario · Expectation · Nuance
+
+**Use when:** The task is complex and contextual. RISEN handles multi-perspective problems where the scenario, constraints, and edge cases are as important as the core ask.
+
+**Example use case:** Writing a v2 → v3 API migration guide that acknowledges deprecated patterns.
+
+---
+
+### RTF
+**Fields:** Role · Task · Format
+
+**Use when:** The scope is narrow and well-defined. RTF is the leanest effective framework — use it when you know exactly what you want and don't need behavioral scaffolding.
+
+**Example use case:** "Audit this Express.js middleware stack and return a ranked issue list."
+
+---
+
+### CRISPE
+**Fields:** Capacity/Role · Insight · Statement · Personality · Experiment
+
+**Use when:** You want a specific AI persona and iterative, exploratory output. The Experiment field allows you to request two competing approaches or hypotheses for comparison.
+
+**Example use case:** Getting an SRE persona to propose and compare two solutions to a GC latency problem.
+
+---
+
+### RACE
+**Fields:** Role · Action · Tactic · Expectation
+
+**Use when:** Speed and repeatability matter more than nuance. RACE is optimized for high-volume tasks: emails, announcements, social posts, daily comms.
+
+**Example use case:** Drafting a LinkedIn product launch post with specific constraints on length and structure.
+
+---
+
+### CARE
+**Fields:** Context · Action · Result · Example
+
+**Use when:** Demonstrating success is key. CARE anchors the prompt to a concrete reference example, which helps the model understand the quality bar and the style of "done well."
+
+**Example use case:** Writing a developer onboarding guide modeled on Stripe-style documentation.
+
+---
+
+### Chain of Thought (CoT)
+**Fields:** Role · Problem · Reasoning Hint · Output Format
+
+**Use when:** The problem requires explicit step-by-step reasoning before a conclusion. The Reasoning Hint field instructs the model how to reason — or leave it blank for default CoT behavior.
+
+**Example use case:** Diagnosing a slow Postgres query and ranking optimization strategies.
+
+---
+
+### Tree of Thoughts (ToT)
+**Fields:** Role · Problem · Thought Paths · Evaluation Criteria · Output Format
+
+**Use when:** There are multiple viable solutions and you want the model to explore each independently before recommending. The Thought Paths field defines the branches; Evaluation Criteria defines how to score them.
+
+**Example use case:** Choosing between PostgreSQL, MongoDB, and Cassandra for a real-time collaboration platform.
+
+---
+
+### ReAct
+**Fields:** Role · Problem · Available Actions · Output Format
+
+**Use when:** Simulating or instructing an AI agent that interacts with external tools. The Available Actions field explicitly lists what tools/functions the agent can call.
+
+**Example use case:** A research agent tasked with competitive intelligence gathering using web search and data extraction tools.
+
+---
+
+### APE
+**Fields:** Action · Purpose · Expectation
+
+**Use when:** Maximum directness is needed. APE is three fields: do this, because of this, outputting this. No persona, no behavioral scaffolding.
+
+**Example use case:** "Generate a Python CSV parser. For automating AP data ingestion. Production-ready with error handling."
+
+---
+
+### Five S Model
+**Fields:** Set the Scene · Specify Task · Simplify Language · Structure Response · Share Feedback
+
+**Use when:** Teaching or onboarding. The Five S model is designed for rapid iteration and teachability — the Share Feedback field instructs the model to include reflection and common mistakes.
+
+**Example use case:** Explaining REST API design to a junior developer with beginner-friendly language and a closing mistakes checklist.
+
+---
+
+### Few-Shot
+**Fields:** Role · Task · Example Input · Example Output · Format
+
+**Use when:** You need consistent output patterns — tone, transformation style, or content format. The worked example establishes the quality bar implicitly.
+
+**Example use case:** Transforming verbose internal engineering notes into public developer documentation, with before/after examples.
+
+---
+
+## Implementation Notes
+
+### `/api/analyze` — Auto-Fill
+Uses `stream: false` and `temperature: 0.3` (low temperature improves JSON consistency). The response is stripped of markdown fences via regex before `JSON.parse`. If parsing fails, `raw_fallback` is returned — the client surfaces a helpful error message pointing to model capability issues.
+
+### `/api/reformat` — Streaming
+Uses `stream: true` with SSE. A buffer accumulates partial lines across TCP chunks (`buffer = lines.pop()`) to prevent malformed JSON parses at chunk boundaries. All four exit paths (non-OK response, stream error, stream end, outer catch) call `res.end()`.
+
+### `addLangInstruction`
+Zero-cost when `outputLang !== 'es'` — returns the system prompt unchanged. The Spanish directive is appended as a final bullet, not injected into the middle of the prompt, which preserves the integrity of framework assembly rules.
+
+### Auto-Fill guards
+Both `isStreaming` and `isAnalyzing` are checked before any LLM call and reset in `finally` blocks. This prevents double-forge, forge-during-autofill, and permanent lock on any network error.
 
 ---
 
@@ -124,44 +355,3 @@ prompt-forge/
 └── public/
     └── index.html
 ```
-
----
-
-## Files
-
-### `docker-compose.yml`
-### `Dockerfile`
-### `package.json`
-> `node-fetch` is pinned to `^2.x` (CommonJS). v3+ is ESM-only — do not upgrade without converting `server.js` to ES module syntax.
-### `server.js`
-### `public/index.html`
-
-## Code Review Notes
-
-### Language system — `addLangInstruction(systemPrompt, outputLang, isVisual)`
-Single helper function on the server. Returns the system prompt unchanged when `outputLang !== 'es'` (zero cost, no branching in callers). When Spanish is requested it appends a directive as the final bullet in the system prompt so it takes highest priority. The `isVisual` flag adds an exception clause preserving English for platform-specific technical syntax keywords — without this, Midjourney `--ar 16:9` or Stable Diffusion `(masterpiece:1.3)` tags would be translated and break the generator.
-
-Wired into all five system prompt assembly points:
-- `/api/analyze` (Auto-Fill field values)
-- `/api/reformat` quick branch
-- `/api/reformat` structured framework branch
-- `/api/reformat` visual image branch
-- `/api/reformat` visual video branch
-
-### Token counter
-`updateTokenCounter(text)` uses `Math.ceil(text.length / 4)` — the standard GPT-family approximation. Called in `startStreaming()` (reset to 0), `appendToken()` (live update every token), `finishStreaming()` (final count), and `clearOutput()` (reset to 0). DOM refs `tokCount` and `charCountOut` are fetched once at init. The counter is displayed in a sticky `.output-footer` bar that sits between `output-scroll` and the action bar, always visible regardless of scroll position.
-
-### `isStreaming` + `isAnalyzing` dual guards
-Both `forge()` and `autofill()` check both flags before proceeding and reset their own flag in a `finally` block. Prevents double-forge, forge-during-autofill, autofill-during-streaming, and permanent lock on any network error.
-
-### SSE buffer split
-`buffer = lines.pop()` retains any incomplete trailing line across `reader.read()` calls, preventing partial-JSON parse errors when NDJSON boundaries land mid-TCP-chunk.
-
-### XSS safety
-All streamed content goes through `outputContent.textContent = currentText` — never `innerHTML`. The blinking cursor `<span>` is created via `createElement`.
-
-### All stream error paths call `res.end()`
-Four paths: `!ollamaRes.ok` early return, `body.on('error')`, `body.on('end')`, and the outer `catch` (wrapped in its own try/catch to handle the race where `flushHeaders` hasn't fired yet).
-
-### `node-fetch` v2 pin
-Intentional. v3+ is ESM-only and breaks `require('node-fetch')`.
