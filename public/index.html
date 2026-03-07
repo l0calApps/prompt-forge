@@ -14,9 +14,10 @@
     --surface3: #1e2330;
     --border:   #252a35;
     --border2:  #2e3545;
-    --accent:   #e8ff47;
-    --accent2:  #47ffe8;
-    --accent3:  #ff6b47;
+    --accent:   #e8ff47;   /* yellow-green — Quick / text */
+    --accent2:  #47ffe8;   /* cyan — Structured / frameworks */
+    --accent3:  #ff6b47;   /* orange — Visual / image */
+    --accent4:  #b847ff;   /* violet — Video */
     --text:     #e2e8f4;
     --muted:    #6b7894;
     --danger:   #ff4747;
@@ -27,7 +28,6 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html, body { height: 100%; }
 
   body {
@@ -42,661 +42,499 @@
 
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    top: -200px; right: -200px;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(71,255,232,0.03) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0; opacity: 0.5;
   }
 
   /* ── HEADER ── */
   header {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 28px;
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 28px;
     border-bottom: 1px solid var(--border);
-    background: rgba(10,11,13,0.9);
-    backdrop-filter: blur(12px);
+    background: rgba(10,11,13,0.92);
+    backdrop-filter: blur(14px);
     flex-shrink: 0;
   }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .logo { display: flex; align-items: center; gap: 10px; }
 
   .logo-icon {
-    width: 28px; height: 28px;
+    width: 26px; height: 26px;
     background: var(--accent);
     clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
     animation: glow 3s ease-in-out infinite;
     flex-shrink: 0;
   }
-
   @keyframes glow {
     0%,100% { filter: drop-shadow(0 0 4px rgba(232,255,71,0.5)); }
-    50%      { filter: drop-shadow(0 0 12px rgba(232,255,71,0.9)); }
+    50%      { filter: drop-shadow(0 0 14px rgba(232,255,71,0.9)); }
   }
 
-  .logo-text {
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
+  .logo-text { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
   .logo-text span { color: var(--accent); }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  .logo-version {
+    font-family: var(--mono); font-size: 0.58rem;
+    color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 10px;
+    padding: 2px 7px; margin-left: 4px; letter-spacing: 0.04em;
   }
 
-  .status-pill {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    color: var(--muted);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--muted);
-    transition: all 0.4s;
-  }
-  .status-dot.online { background: var(--accent); box-shadow: 0 0 6px rgba(232,255,71,0.7); }
-  .status-dot.error  { background: var(--danger); box-shadow: 0 0 6px rgba(255,71,71,0.7); }
+  .header-right { display: flex; align-items: center; gap: 10px; }
 
   select.model-select {
-    background: var(--surface2);
-    color: var(--text);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border2); border-radius: var(--radius);
     padding: 6px 28px 6px 12px;
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    cursor: pointer;
-    appearance: none;
+    font-family: var(--mono); font-size: 0.75rem;
+    cursor: pointer; appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7894' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 9px center;
-    min-width: 200px;
-    transition: border-color 0.2s;
+    background-repeat: no-repeat; background-position: right 9px center;
+    min-width: 195px; transition: border-color 0.2s;
   }
   select.model-select:hover, select.model-select:focus { border-color: var(--accent); outline: none; }
 
-  /* ── MAIN LAYOUT ── */
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border); padding: 4px 11px; border-radius: 20px;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted); transition: all 0.4s;
+  }
+  .status-dot.online { background: var(--accent); box-shadow: 0 0 6px rgba(232,255,71,0.7); }
+  .status-dot.error  { background: var(--danger);  box-shadow: 0 0 6px rgba(255,71,71,0.7); }
+
+  /* ── WORKSPACE ── */
   .workspace {
-    position: relative;
-    z-index: 10;
-    flex: 1;
-    display: grid;
+    position: relative; z-index: 10;
+    flex: 1; display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
     min-height: 0;
   }
 
   /* ── LEFT PANEL ── */
   .left-panel {
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     border-right: 1px solid var(--border);
-    min-height: 0;
-    overflow: hidden;
+    min-height: 0; overflow: hidden;
   }
 
   /* ── MODE BAR ── */
   .mode-bar {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 12px 20px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px;
     border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-    flex-shrink: 0;
+    background: var(--surface2); flex-shrink: 0;
   }
 
   .mode-toggle {
     display: flex;
-    background: var(--surface3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 3px;
-    gap: 2px;
+    background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 3px; gap: 2px;
   }
 
   .mode-btn {
-    padding: 6px 16px;
-    border: none;
-    border-radius: 4px;
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 5px 14px; border: none; border-radius: 4px;
+    background: transparent; color: var(--muted);
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.15s;
   }
-  .mode-btn.active { background: var(--accent); color: #0a0b0d; font-weight: 700; }
   .mode-btn:not(.active):hover { color: var(--text); background: var(--border); }
+  .mode-btn.active[data-mode="quick"]      { background: var(--accent);  color: #0a0b0d; font-weight: 700; }
+  .mode-btn.active[data-mode="structured"] { background: var(--accent2); color: #0a0b0d; font-weight: 700; }
+  .mode-btn.active[data-mode="visual"]     { background: var(--accent3); color: #0a0b0d; font-weight: 700; }
 
-  .mode-bar-right {
-    margin-left: auto;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  .mode-hint {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--muted); margin-left: auto;
   }
 
-  /* ── STYLE TABS ── */
+  /* ── QUICK MODE ── */
+  #quickMode { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
   .style-bar {
-    padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
+    background: var(--surface); flex-shrink: 0;
   }
-
   .style-label {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    white-space: nowrap;
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; color: var(--muted);
+    text-transform: uppercase; white-space: nowrap;
   }
-
   .style-tabs {
-    display: flex;
-    gap: 3px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 3px;
-    flex-wrap: wrap;
+    display: flex; gap: 3px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 3px; flex-wrap: wrap;
   }
-
   .style-tab {
-    padding: 5px 12px;
-    border-radius: 4px;
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    transition: all 0.15s;
-    text-transform: uppercase;
+    padding: 4px 11px; border-radius: 4px;
+    font-family: var(--mono); font-size: 0.63rem;
+    letter-spacing: 0.04em; cursor: pointer; border: none;
+    background: transparent; color: var(--muted);
+    transition: all 0.15s; text-transform: uppercase;
   }
   .style-tab:hover  { color: var(--text); background: var(--border); }
   .style-tab.active { background: var(--accent); color: #0a0b0d; font-weight: 700; }
 
-  /* ── RAW INPUT ── */
-  .raw-input-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
   textarea.raw-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    resize: none;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.83rem;
-    line-height: 1.7;
-    padding: 20px;
-    outline: none;
-    min-height: 0;
+    flex: 1; background: transparent; border: none;
+    resize: none; color: var(--text);
+    font-family: var(--mono); font-size: 0.82rem;
+    line-height: 1.75; padding: 18px;
+    outline: none; min-height: 0;
   }
-  textarea.raw-input::placeholder { color: var(--muted); opacity: 0.5; }
+  textarea.raw-input::placeholder { color: var(--muted); opacity: 0.45; }
 
   .input-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 20px;
-    border-top: 1px solid var(--border);
-    background: var(--surface);
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 18px; border-top: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  .char-count { font-family: var(--mono); font-size: 0.63rem; color: var(--muted); }
+
+  /* ── STRUCTURED MODE ── */
+  #structuredMode {
+    display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden;
   }
 
-  .char-count {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    color: var(--muted);
-  }
-
-  /* ── FRAMEWORK PANEL ── */
-  .framework-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
+  .raw-intent-row {
+    padding: 10px 16px 0;
+    background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0;
   }
 
   .framework-bar {
-    padding: 10px 16px;
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 16px; flex-shrink: 0;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-    flex-wrap: wrap;
+    background: var(--surface); flex-wrap: wrap;
   }
-
   .fw-tab {
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    cursor: pointer;
+    padding: 4px 13px; border-radius: 20px;
+    font-family: var(--mono); font-size: 0.63rem;
+    letter-spacing: 0.05em; cursor: pointer;
     border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--muted);
-    transition: all 0.15s;
-    text-transform: uppercase;
+    background: transparent; color: var(--muted);
+    transition: all 0.15s; text-transform: uppercase;
   }
   .fw-tab:hover { color: var(--text); border-color: var(--text); }
   .fw-tab.active { background: var(--accent2); color: #0a0b0d; border-color: var(--accent2); font-weight: 700; }
 
   .fw-desc {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    color: var(--muted);
-    padding: 6px 16px 10px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-    line-height: 1.5;
-    flex-shrink: 0;
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    padding: 6px 16px 9px; line-height: 1.5;
+    border-bottom: 1px solid var(--border); background: var(--surface2); flex-shrink: 0;
   }
   .fw-desc strong { color: var(--accent2); }
 
-  .fields-scroll {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  /* ── VISUAL MODE ── */
+  #visualMode {
+    display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden;
   }
 
+  .visual-type-bar {
+    display: flex; align-items: center;
+    padding: 10px 18px; gap: 8px;
+    background: var(--surface2); border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+
+  .vtype-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 18px; border-radius: var(--radius);
+    border: 1px solid var(--border2);
+    background: transparent; color: var(--muted);
+    font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .vtype-btn:hover { color: var(--text); border-color: var(--text); }
+  .vtype-btn.active[data-vtype="image"] { background: var(--accent3); color: #0a0b0d; border-color: var(--accent3); }
+  .vtype-btn.active[data-vtype="video"] { background: var(--accent4); color: #fff; border-color: var(--accent4); }
+
+  .platform-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 16px; flex-shrink: 0;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    flex-wrap: wrap; overflow: hidden; transition: max-height 0.2s;
+  }
+  .platform-label {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.08em; color: var(--muted);
+    text-transform: uppercase; white-space: nowrap; margin-right: 4px;
+  }
+  .platform-btn {
+    padding: 4px 12px; border-radius: 20px;
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.04em; cursor: pointer;
+    border: 1px solid var(--border2); background: transparent; color: var(--muted);
+    transition: all 0.15s;
+  }
+  .platform-btn:hover { color: var(--text); border-color: var(--text); }
+  .platform-btn.active-img { background: var(--accent3); color: #0a0b0d; border-color: var(--accent3); font-weight: 700; }
+  .platform-btn.active-vid { background: var(--accent4); color: #fff; border-color: var(--accent4); font-weight: 700; }
+
+  .platform-hint {
+    width: 100%; font-family: var(--mono); font-size: 0.6rem;
+    color: var(--muted); opacity: 0.7; padding-top: 2px; font-style: italic;
+  }
+
+  /* ── SHARED FIELDS SCROLL ── */
+  .fields-scroll {
+    flex: 1; overflow-y: auto;
+    padding: 12px 16px; display: flex; flex-direction: column; gap: 11px;
+  }
   .fields-scroll::-webkit-scrollbar { width: 4px; }
   .fields-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+  .field-group { display: flex; flex-direction: column; gap: 4px; }
 
   .field-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 0.63rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 0.61rem;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
   }
-
   .field-badge {
-    font-size: 0.58rem;
-    padding: 1px 6px;
-    border-radius: 10px;
-    background: var(--surface3);
-    border: 1px solid var(--border2);
-    color: var(--accent2);
+    font-size: 0.57rem; padding: 1px 6px; border-radius: 10px;
+    background: var(--surface3); border: 1px solid var(--border2);
     letter-spacing: 0.04em;
   }
+  .field-badge.img { color: var(--accent3); border-color: rgba(255,107,71,0.4); }
+  .field-badge.vid { color: var(--accent4); border-color: rgba(184,71,255,0.4); }
+  .field-badge.fw  { color: var(--accent2); border-color: rgba(71,255,232,0.4); }
 
   .field-tip {
-    font-size: 0.6rem;
-    color: var(--muted);
-    opacity: 0.7;
-    font-style: italic;
-    padding-left: 2px;
+    font-size: 0.59rem; color: var(--muted); opacity: 0.65;
+    font-style: italic; padding-left: 2px;
   }
 
   textarea.field-input, input.field-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    line-height: 1.6;
-    padding: 9px 12px;
-    outline: none;
-    resize: none;
-    transition: border-color 0.15s;
-    width: 100%;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text);
+    font-family: var(--mono); font-size: 0.77rem; line-height: 1.6;
+    padding: 8px 11px; outline: none; resize: none;
+    transition: border-color 0.15s; width: 100%;
   }
-  textarea.field-input:hover, textarea.field-input:focus,
-  input.field-input:hover,    input.field-input:focus {
-    border-color: var(--accent2);
-  }
-  textarea.field-input::placeholder, input.field-input::placeholder {
-    color: var(--muted);
-    opacity: 0.5;
-    font-style: italic;
-  }
+  textarea.field-input:focus, input.field-input:focus { border-color: var(--border2); }
+  textarea.field-input::placeholder, input.field-input::placeholder { color: var(--muted); opacity: 0.45; font-style: italic; }
+  .field-input.filled-fw  { border-color: rgba(71,255,232,0.35); }
+  .field-input.filled-img { border-color: rgba(255,107,71,0.35); }
+  .field-input.filled-vid { border-color: rgba(184,71,255,0.35); }
 
-  .field-input.filled { border-color: rgba(71,255,232,0.3); }
+  .field-input.analyzing {
+    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.2s infinite;
+    color: transparent; pointer-events: none;
+  }
 
   /* ── RIGHT PANEL ── */
-  .right-panel {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
+  .right-panel { display: flex; flex-direction: column; min-height: 0; }
 
   .output-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px; border-bottom: 1px solid var(--border);
+    background: var(--surface2); flex-shrink: 0;
   }
-
   .output-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
   }
-
   .dot { width: 6px; height: 6px; border-radius: 50%; }
   .dot-y { background: var(--accent); }
   .dot-c { background: var(--accent2); }
+  .dot-o { background: var(--accent3); }
+  .dot-v { background: var(--accent4); }
 
   .output-actions { display: flex; gap: 6px; }
-
   .icon-btn {
-    background: none;
-    border: 1px solid var(--border2);
-    color: var(--muted);
-    border-radius: 4px;
-    width: 28px; height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.75rem;
-    transition: all 0.15s;
-    font-family: var(--mono);
+    background: none; border: 1px solid var(--border2); color: var(--muted);
+    border-radius: 4px; width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.75rem; transition: all 0.15s; font-family: var(--mono);
   }
   .icon-btn:hover { color: var(--text); border-color: var(--text); background: var(--surface3); }
   .icon-btn.success { color: var(--success); border-color: var(--success); }
 
   .output-meta {
-    padding: 6px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    color: var(--muted);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-shrink: 0;
+    display: none; padding: 5px 20px;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    align-items: center; gap: 8px; flex-shrink: 0;
   }
   .meta-badge {
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: var(--surface3);
-    border: 1px solid var(--border2);
-    color: var(--accent2);
-    font-size: 0.6rem;
+    padding: 2px 8px; border-radius: 10px;
+    background: var(--surface3); border: 1px solid var(--border2);
+    font-size: 0.59rem;
   }
-  .meta-badge.mode-q { color: var(--accent); }
+  .meta-badge.m-q   { color: var(--accent);  border-color: rgba(232,255,71,0.3); }
+  .meta-badge.m-s   { color: var(--accent2); border-color: rgba(71,255,232,0.3); }
+  .meta-badge.m-img { color: var(--accent3); border-color: rgba(255,107,71,0.3); }
+  .meta-badge.m-vid { color: var(--accent4); border-color: rgba(184,71,255,0.3); }
 
-  .output-scroll {
-    flex: 1;
-    overflow-y: auto;
-    position: relative;
-    min-height: 0;
-  }
+  .output-scroll { flex: 1; overflow-y: auto; min-height: 0; }
   .output-scroll::-webkit-scrollbar { width: 4px; }
   .output-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
   .output-content {
-    padding: 24px;
-    font-family: var(--mono);
-    font-size: 0.83rem;
-    line-height: 1.8;
-    color: var(--text);
-    white-space: pre-wrap;
-    word-break: break-word;
-    min-height: 200px;
+    padding: 22px; font-family: var(--mono); font-size: 0.82rem;
+    line-height: 1.8; color: var(--text); white-space: pre-wrap;
+    word-break: break-word; min-height: 200px;
   }
 
   .output-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 60px 20px;
-    color: var(--muted);
-    opacity: 0.4;
-    text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; padding: 60px 20px;
+    color: var(--muted); opacity: 0.35; text-align: center;
   }
   .output-placeholder svg { opacity: 0.3; }
-  .output-placeholder p { font-family: var(--mono); font-size: 0.78rem; line-height: 1.6; }
+  .output-placeholder p { font-family: var(--mono); font-size: 0.75rem; line-height: 1.65; }
 
   .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1em;
-    background: var(--accent);
-    margin-left: 2px;
-    vertical-align: text-bottom;
-    animation: blink 0.8s step-end infinite;
+    display: inline-block; width: 2px; height: 1em;
+    background: var(--accent); margin-left: 2px;
+    vertical-align: text-bottom; animation: blink 0.8s step-end infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
 
   /* ── ACTION BAR ── */
   .action-bar {
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-    background: rgba(10,11,13,0.95);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-    position: sticky;
-    bottom: 0;
-    z-index: 20;
+    padding: 11px 20px; border-top: 1px solid var(--border);
+    background: rgba(10,11,13,0.96); backdrop-filter: blur(10px);
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0; position: sticky; bottom: 0; z-index: 20;
   }
-
-  .action-bar .left { display: flex; gap: 8px; align-items: center; }
-  .action-bar .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .action-bar .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .footer-status { font-family: var(--mono); font-size: 0.64rem; color: var(--muted); }
 
   .forge-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent);
-    color: #0a0b0d;
-    border: none;
-    border-radius: var(--radius);
-    padding: 10px 22px;
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
-    overflow: hidden;
+    display: flex; align-items: center; gap: 7px;
+    border: none; border-radius: var(--radius);
+    padding: 9px 20px; font-family: var(--sans); font-weight: 700;
+    font-size: 0.85rem; cursor: pointer; transition: all 0.15s;
+    position: relative; overflow: hidden;
   }
+  .forge-btn.mode-quick      { background: var(--accent);  color: #0a0b0d; }
+  .forge-btn.mode-structured { background: var(--accent2); color: #0a0b0d; }
+  .forge-btn.mode-visual-img { background: var(--accent3); color: #0a0b0d; }
+  .forge-btn.mode-visual-vid { background: var(--accent4); color: #fff; }
   .forge-btn::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(255,255,255,0.15);
-    transform: translateX(-100%);
-    transition: transform 0.3s;
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15); transform: translateX(-100%); transition: transform 0.3s;
   }
   .forge-btn:hover::before { transform: translateX(0); }
-  .forge-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(232,255,71,0.3); }
+  .forge-btn:hover { transform: translateY(-1px); }
   .forge-btn:active { transform: translateY(0); }
-  .forge-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .forge-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
   .forge-btn svg { transition: transform 0.2s; }
   .forge-btn:hover:not(:disabled) svg { transform: rotate(15deg); }
 
   .autofill-btn {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    background: transparent;
-    color: var(--accent2);
-    border: 1px solid var(--accent2);
-    border-radius: var(--radius);
-    padding: 9px 18px;
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: all 0.15s;
+    display: none; align-items: center; gap: 7px;
+    background: transparent; color: var(--accent2);
+    border: 1px solid var(--accent2); border-radius: var(--radius);
+    padding: 8px 16px; font-family: var(--sans); font-weight: 600;
+    font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
   }
-  .autofill-btn:hover { background: rgba(71,255,232,0.08); box-shadow: 0 0 12px rgba(71,255,232,0.15); }
+  .autofill-btn:hover { background: rgba(71,255,232,0.07); }
   .autofill-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .autofill-btn.show { display: flex; }
+
+  .autofill-btn.vis-img { color: var(--accent3); border-color: var(--accent3); }
+  .autofill-btn.vis-img:hover { background: rgba(255,107,71,0.07); }
+  .autofill-btn.vis-vid { color: var(--accent4); border-color: var(--accent4); }
+  .autofill-btn.vis-vid:hover { background: rgba(184,71,255,0.07); }
 
   .clear-btn {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 9px 14px;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    cursor: pointer;
-    transition: all 0.15s;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    padding: 8px 13px; font-family: var(--mono); font-size: 0.7rem;
+    cursor: pointer; transition: all 0.15s;
   }
   .clear-btn:hover { color: var(--text); background: var(--surface2); }
 
-  .footer-status {
-    font-family: var(--mono);
-    font-size: 0.66rem;
-    color: var(--muted);
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    display: flex;
+    background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 3px; gap: 2px;
   }
+  .lang-btn {
+    padding: 5px 11px; border: none; border-radius: 4px;
+    background: transparent; color: var(--muted);
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.08em; cursor: pointer; transition: all 0.15s;
+  }
+  .lang-btn:not(.active):hover { color: var(--text); background: var(--border); }
+  .lang-btn.active { background: var(--surface2); color: var(--text); font-weight: 700; border: 1px solid var(--border2); }
+  .meta-badge.m-lang { color: var(--muted); border-color: var(--border2); font-style: italic; }
+
+  /* ── OUTPUT FOOTER (token counter) ── */
+  .output-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .token-counter {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .token-counter span { display: flex; align-items: center; gap: 4px; }
+  .token-counter .t-val { color: var(--text); font-weight: 700; }
+  .token-counter .t-label { opacity: 0.6; }
+  .token-counter .t-sep { opacity: 0.25; }
 
   /* ── SHIMMER ── */
   @keyframes shimmer {
     0%   { background-position: -600px 0; }
-    100% { background-position: 600px 0; }
+    100% { background-position:  600px 0; }
   }
   .loading-line {
-    height: 13px;
-    border-radius: 4px;
+    height: 12px; border-radius: 4px; margin-bottom: 13px;
     background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
-    background-size: 600px 100%;
-    animation: shimmer 1.4s infinite;
-    margin-bottom: 14px;
-    max-width: 100%;
+    background-size: 600px 100%; animation: shimmer 1.4s infinite;
   }
-  .loading-line:nth-child(2) { width: 85%; animation-delay: 0.1s; }
+  .loading-line:nth-child(2) { width: 84%; animation-delay: 0.1s; }
   .loading-line:nth-child(3) { width: 93%; animation-delay: 0.2s; }
-  .loading-line:nth-child(4) { width: 68%; animation-delay: 0.3s; }
-  .loading-line:nth-child(5) { width: 80%; animation-delay: 0.4s; }
-
-  .field-input.analyzing {
-    animation: shimmer 1.2s infinite;
-    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
-    background-size: 600px 100%;
-    color: transparent;
-    pointer-events: none;
-  }
+  .loading-line:nth-child(4) { width: 67%; animation-delay: 0.3s; }
+  .loading-line:nth-child(5) { width: 78%; animation-delay: 0.4s; }
 
   /* ── TOASTS ── */
-  .error-toast {
-    position: fixed;
-    bottom: 70px; left: 50%;
+  .toast {
+    position: fixed; bottom: 66px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #1e0f0f;
-    border: 1px solid var(--danger);
-    color: #ff9999;
-    padding: 10px 20px;
-    border-radius: var(--radius);
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    z-index: 200;
+    padding: 9px 18px; border-radius: var(--radius);
+    font-family: var(--mono); font-size: 0.76rem; z-index: 200;
     transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    max-width: 500px;
-    text-align: center;
-    pointer-events: none;
+    max-width: 520px; text-align: center; pointer-events: none;
   }
-  .error-toast.show { transform: translateX(-50%) translateY(0); }
-
-  .info-toast {
-    position: fixed;
-    bottom: 70px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: #0f1e1a;
-    border: 1px solid var(--accent2);
-    color: var(--accent2);
-    padding: 10px 20px;
-    border-radius: var(--radius);
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    z-index: 200;
-    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    max-width: 500px;
-    text-align: center;
-    pointer-events: none;
-  }
-  .info-toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: #1e0f0f; border: 1px solid var(--danger); color: #ff9999; }
+  .toast.info  { background: #0f1a1e; border: 1px solid var(--accent2); color: var(--accent2); }
+  .toast.img   { background: #1e120f; border: 1px solid var(--accent3); color: #ffb899; }
+  .toast.vid   { background: #140f1e; border: 1px solid var(--accent4); color: #d4a0ff; }
 
   @media (max-width: 860px) {
     .workspace { grid-template-columns: 1fr; }
-    .left-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
+    .left-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 55vh; }
   }
 </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header>
   <div class="logo">
     <div class="logo-icon"></div>
     <div class="logo-text">Prompt<span>Forge</span></div>
+    <span class="logo-version">v3</span>
   </div>
   <div class="header-right">
     <select class="model-select" id="modelSelect">
@@ -709,22 +547,23 @@
   </div>
 </header>
 
+<!-- ── WORKSPACE ── -->
 <div class="workspace">
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
 
+    <!-- Mode toggle -->
     <div class="mode-bar">
       <div class="mode-toggle">
         <button class="mode-btn active" data-mode="quick">Quick</button>
         <button class="mode-btn" data-mode="structured">Structured</button>
+        <button class="mode-btn" data-mode="visual">Visual</button>
       </div>
-      <div class="mode-bar-right">
-        <span style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);" id="modeHint">Reformat raw text into a better prompt</span>
-      </div>
+      <span class="mode-hint" id="modeHint">Reformat raw text into a better prompt</span>
     </div>
 
-    <!-- QUICK MODE -->
+    <!-- ══ QUICK MODE ══ -->
     <div id="quickMode">
       <div class="style-bar">
         <span class="style-label">Style</span>
@@ -736,31 +575,27 @@
           <button class="style-tab" data-style="debug">Debug</button>
         </div>
       </div>
-      <div class="raw-input-wrap">
-        <textarea class="raw-input" id="rawInput" placeholder="Type your rough idea here…
+      <textarea class="raw-input" id="rawInput" placeholder="Type your rough idea here…
 
 Examples:
 • make me a python script for files
 • explain docker networking
-• why is my nginx returning 502
-• generate a weekly report template"></textarea>
-        <div class="input-footer">
-          <span class="char-count"><span id="charCount">0</span> chars</span>
-        </div>
+• write a k8s policy for app secrets
+• why is my nginx returning 502"></textarea>
+      <div class="input-footer">
+        <span class="char-count"><span id="charCount">0</span> chars</span>
       </div>
     </div>
 
-    <!-- STRUCTURED MODE -->
-    <div id="structuredMode" style="display:none;flex:1;flex-direction:column;min-height:0;overflow:hidden;">
-
-      <div style="padding:10px 16px 0;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
+    <!-- ══ STRUCTURED MODE ══ -->
+    <div id="structuredMode">
+      <div class="raw-intent-row">
         <div class="field-label" style="margin-bottom:5px;">
-          Raw Intent
-          <span class="field-badge">required</span>
+          Raw Intent <span class="field-badge fw">required</span>
         </div>
         <textarea class="field-input" id="structuredRaw" rows="2"
-          placeholder="What do you want to accomplish? (e.g. 'write an nginx config for reverse proxy')"></textarea>
-        <div style="height:10px;"></div>
+          placeholder="What do you want to accomplish?"></textarea>
+        <div style="height:9px;"></div>
       </div>
 
       <div class="framework-bar">
@@ -773,158 +608,261 @@ Examples:
       </div>
 
       <div class="fw-desc" id="fwDesc"></div>
-      <div class="fields-scroll" id="fieldsContainer"></div>
+      <div class="fields-scroll" id="fwFields"></div>
     </div>
 
-  </div>
+    <!-- ══ VISUAL MODE ══ -->
+    <div id="visualMode">
+
+      <!-- Image / Video sub-tabs -->
+      <div class="visual-type-bar">
+        <button class="vtype-btn active" data-vtype="image">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+          Image
+        </button>
+        <button class="vtype-btn" data-vtype="video">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+          </svg>
+          Video
+        </button>
+        <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-left:8px;" id="visualTypeHint">
+          Build prompts for AI image generators
+        </span>
+      </div>
+
+      <!-- Platform selector -->
+      <div class="platform-bar">
+        <span class="platform-label">Platform</span>
+        <div id="platformBtns"></div>
+        <div class="platform-hint" id="platformHint"></div>
+      </div>
+
+      <!-- Raw intent -->
+      <div class="raw-intent-row">
+        <div class="field-label" style="margin-bottom:5px;">
+          Raw Intent <span class="field-badge img" id="visualBadge">image</span>
+        </div>
+        <textarea class="field-input" id="visualRaw" rows="2"
+          placeholder="Describe what you want to generate…"></textarea>
+        <div style="height:9px;"></div>
+      </div>
+
+      <div class="fields-scroll" id="visualFields"></div>
+    </div>
+
+  </div><!-- end left-panel -->
 
   <!-- RIGHT PANEL -->
   <div class="right-panel">
 
     <div class="output-header">
       <div class="output-title">
-        <div class="dot dot-c"></div>
+        <div class="dot dot-c" id="outputDot"></div>
         Forged Prompt
       </div>
       <div class="output-actions">
-        <button class="icon-btn" id="copyBtn" title="Copy to clipboard">⎘</button>
-        <button class="icon-btn" id="clearOutputBtn" title="Clear output">✕</button>
+        <button class="icon-btn" id="copyBtn" title="Copy">⎘</button>
+        <button class="icon-btn" id="clearOutputBtn" title="Clear">✕</button>
       </div>
     </div>
 
-    <div class="output-meta" id="outputMeta" style="display:none;">
+    <div class="output-meta" id="outputMeta">
       <span>Last forge:</span>
-      <span class="meta-badge mode-q" id="metaMode">—</span>
-      <span class="meta-badge" id="metaFw">—</span>
+      <span class="meta-badge" id="metaMode">—</span>
+      <span class="meta-badge" id="metaDetail">—</span>
       <span class="meta-badge" id="metaModel">—</span>
+      <span class="meta-badge m-lang" id="metaLang">—</span>
     </div>
 
     <div class="output-scroll">
       <div class="output-content" id="outputContent">
         <div class="output-placeholder" id="outputPlaceholder">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
           </svg>
-          <p>Your forged prompt appears here.<br/>Use <strong>Quick</strong> mode for fast rewrites,<br/>or <strong>Structured</strong> mode to build with frameworks.</p>
+          <p>Your forged prompt appears here.<br/><strong>Quick</strong> — instant reformat<br/><strong>Structured</strong> — COSTAR / RISEN / RTF / CoT / Few-Shot / ReAct<br/><strong>Visual</strong> — Image &amp; Video generation</p>
         </div>
+      </div>
+    </div>
+
+    <div class="output-footer">
+      <div class="token-counter" id="tokenCounter">
+        <span><span class="t-val" id="tokCount">0</span><span class="t-label"> tokens</span></span>
+        <span class="t-sep">·</span>
+        <span><span class="t-val" id="charCountOut">0</span><span class="t-label"> chars</span></span>
       </div>
     </div>
 
   </div>
 
-</div>
+</div><!-- end workspace -->
 
 <!-- ACTION BAR -->
 <div class="action-bar">
-  <div class="left">
-    <button class="forge-btn" id="forgeBtn" disabled>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-      </svg>
-      Forge Prompt
-    </button>
-    <button class="autofill-btn" id="autofillBtn" style="display:none;" disabled>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-      </svg>
-      Auto-Fill Fields
-    </button>
-    <button class="clear-btn" id="clearBtn">Clear</button>
-  </div>
+  <button class="forge-btn mode-quick" id="forgeBtn" disabled>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+    Forge Prompt
+  </button>
+  <button class="autofill-btn" id="autofillBtn" disabled>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+    </svg>
+    Auto-Fill Fields
+  </button>
+  <button class="clear-btn" id="clearBtn">Clear</button>
   <div class="right">
+    <div class="lang-toggle" title="Output language">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
     <span class="footer-status" id="footerStatus">idle · select a model to begin</span>
   </div>
 </div>
 
-<div class="error-toast" id="errorToast"></div>
-<div class="info-toast"  id="infoToast"></div>
+<div class="toast error" id="toastError"></div>
+<div class="toast info"  id="toastInfo"></div>
+<div class="toast img"   id="toastImg"></div>
+<div class="toast vid"   id="toastVid"></div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-// FRAMEWORK DEFINITIONS
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
+// TEXT FRAMEWORK DEFINITIONS
+// ════════════════════════════════════════════════════════════════════════════
 const FRAMEWORKS = {
   costar: {
     label: 'COSTAR',
-    desc: '<strong>C</strong>ontext · <strong>O</strong>bjective · <strong>S</strong>tyle · <strong>T</strong>one · <strong>A</strong>udience · <strong>R</strong>esponse Format — ideal for business, content, and instructional prompts requiring full behavioral control.',
+    desc: '<strong>C</strong>ontext · <strong>O</strong>bjective · <strong>S</strong>tyle · <strong>T</strong>one · <strong>A</strong>udience · <strong>R</strong>esponse Format — full behavioral control for business, content, and instructional prompts.',
     fields: [
-      { key: 'context',         label: 'Context',         badge: 'C',  tip: 'Background the LLM needs to understand the situation',           rows: 3, placeholder: 'e.g. I manage a Conjur OSS deployment on Docker and need to rotate secrets for a CI/CD pipeline.' },
-      { key: 'objective',       label: 'Objective',       badge: 'O',  tip: 'The specific task or goal to accomplish',                        rows: 2, placeholder: 'e.g. Write a policy YAML that grants read-only access to a specific secret path.' },
-      { key: 'style',           label: 'Style',           badge: 'S',  tip: 'Writing or communication style (technical, narrative, formal)',   rows: 1, placeholder: 'e.g. Technical documentation style with inline comments.' },
-      { key: 'tone',            label: 'Tone',            badge: 'T',  tip: 'Emotional register or attitude',                                  rows: 1, placeholder: 'e.g. Direct and professional.' },
-      { key: 'audience',        label: 'Audience',        badge: 'A',  tip: 'Who will read the response',                                     rows: 1, placeholder: 'e.g. A senior DevOps engineer familiar with YAML and Conjur.' },
-      { key: 'response_format', label: 'Response Format', badge: 'R',  tip: 'How the output should be structured',                            rows: 2, placeholder: 'e.g. YAML code block followed by a brief explanation of each section.' }
+      { key: 'context',         label: 'Context',         badge: 'C',  tip: 'Background the LLM needs',                                   rows: 3, ph: 'e.g. I manage a KIND Docker stack and need to rotate secrets for CI/CD.' },
+      { key: 'objective',       label: 'Objective',       badge: 'O',  tip: 'The specific goal to accomplish',                            rows: 2, ph: 'e.g. Write a YAML policy granting read-only access to a secret path.' },
+      { key: 'style',           label: 'Style',           badge: 'S',  tip: 'Writing or communication style',                             rows: 1, ph: 'e.g. Technical documentation with inline comments.' },
+      { key: 'tone',            label: 'Tone',            badge: 'T',  tip: 'Emotional register',                                         rows: 1, ph: 'e.g. Direct and professional.' },
+      { key: 'audience',        label: 'Audience',        badge: 'A',  tip: 'Who reads the response',                                     rows: 1, ph: 'e.g. Senior DevOps engineer familiar with YAML.' },
+      { key: 'response_format', label: 'Response Format', badge: 'R',  tip: 'How output should be structured',                            rows: 2, ph: 'e.g. YAML block followed by a brief per-section explanation.' }
     ]
   },
   risen: {
     label: 'RISEN',
-    desc: '<strong>R</strong>ole · <strong>I</strong>nstructions · <strong>S</strong>teps · <strong>E</strong>nd Goal · <strong>N</strong>arrowing — best for agentic, task-driven prompts where you need a clear persona and constrained scope.',
+    desc: '<strong>R</strong>ole · <strong>I</strong>nstructions · <strong>S</strong>teps · <strong>E</strong>nd Goal · <strong>N</strong>arrowing — agentic, task-driven with clear persona and scoped constraints.',
     fields: [
-      { key: 'role',         label: 'Role',         badge: 'R', tip: 'The expert persona the LLM should adopt',            rows: 2, placeholder: 'e.g. You are a senior Linux systems engineer specializing in container networking.' },
-      { key: 'instructions', label: 'Instructions', badge: 'I', tip: 'Specific task instructions — what exactly to do',    rows: 3, placeholder: 'e.g. Diagnose why traffic is not reaching the backend container and provide a fix.' },
-      { key: 'steps',        label: 'Steps',        badge: 'S', tip: 'Ordered steps or process to follow',                rows: 3, placeholder: 'e.g. 1. Check iptables rules 2. Inspect bridge network 3. Verify container DNS resolution' },
-      { key: 'end_goal',     label: 'End Goal',     badge: 'E', tip: 'The ultimate outcome or deliverable desired',        rows: 2, placeholder: 'e.g. A working docker-compose network config and an explanation of the root cause.' },
-      { key: 'narrowing',    label: 'Narrowing',    badge: 'N', tip: 'Constraints, scope limits, what to avoid',          rows: 2, placeholder: 'e.g. Focus only on IPv4. Do not suggest rebuilding the entire stack.' }
+      { key: 'role',         label: 'Role',         badge: 'R', tip: 'Expert persona the LLM adopts',             rows: 2, ph: 'e.g. Senior Linux engineer specializing in container networking.' },
+      { key: 'instructions', label: 'Instructions', badge: 'I', tip: 'What exactly to do',                        rows: 3, ph: 'e.g. Diagnose why traffic is not reaching the backend container.' },
+      { key: 'steps',        label: 'Steps',        badge: 'S', tip: 'Ordered process to follow',                 rows: 3, ph: 'e.g. 1. Check iptables 2. Inspect bridge network 3. Verify DNS.' },
+      { key: 'end_goal',     label: 'End Goal',     badge: 'E', tip: 'Ultimate deliverable',                      rows: 2, ph: 'e.g. Working docker-compose network config + root cause explanation.' },
+      { key: 'narrowing',    label: 'Narrowing',    badge: 'N', tip: 'Constraints — what to avoid',               rows: 2, ph: 'e.g. Focus only on IPv4. Do not suggest rebuilding the stack.' }
     ]
   },
   rtf: {
     label: 'RTF',
-    desc: '<strong>R</strong>ole · <strong>T</strong>ask · <strong>F</strong>ormat — a lean, fast framework for clear, direct prompts. Best when scope is narrow and output format is well defined.',
+    desc: '<strong>R</strong>ole · <strong>T</strong>ask · <strong>F</strong>ormat — lean and direct. Best for narrow scope with well-defined output.',
     fields: [
-      { key: 'role',   label: 'Role',   badge: 'R', tip: 'The persona to embody',               rows: 2, placeholder: 'e.g. You are a Bash scripting expert with 15 years of Unix systems experience.' },
-      { key: 'task',   label: 'Task',   badge: 'T', tip: 'The single specific action to perform', rows: 3, placeholder: 'e.g. Write a Bash script that monitors disk usage and alerts when any partition exceeds 80%.' },
-      { key: 'format', label: 'Format', badge: 'F', tip: 'Exact output structure and constraints', rows: 2, placeholder: 'e.g. Return a commented Bash script only. No explanation outside the comments.' }
+      { key: 'role',   label: 'Role',   badge: 'R', tip: 'Persona to embody',               rows: 2, ph: 'e.g. Bash scripting expert with 15 years of Unix experience.' },
+      { key: 'task',   label: 'Task',   badge: 'T', tip: 'Single specific action to perform', rows: 3, ph: 'e.g. Write a Bash script that alerts when disk usage exceeds 80%.' },
+      { key: 'format', label: 'Format', badge: 'F', tip: 'Exact output structure',            rows: 2, ph: 'e.g. Commented Bash only. No prose explanation outside comments.' }
     ]
   },
   cot: {
     label: 'Chain of Thought',
-    desc: '<strong>R</strong>ole · <strong>P</strong>roblem · <strong>R</strong>easoning Hint · <strong>O</strong>utput Format — instructs the LLM to reason step by step before answering. Improves accuracy on complex, multi-step problems.',
+    desc: '<strong>R</strong>ole · <strong>P</strong>roblem · <strong>R</strong>easoning Hint · <strong>O</strong>utput Format — forces step-by-step reasoning. Best for complex, multi-step problems.',
     fields: [
-      { key: 'role',           label: 'Role',           badge: 'R', tip: 'Expert persona to guide reasoning quality',                   rows: 2, placeholder: 'e.g. You are a network security analyst with deep knowledge of firewall rules and packet flow.' },
-      { key: 'problem',        label: 'Problem',        badge: 'P', tip: 'The complex question or scenario requiring reasoning',        rows: 3, placeholder: 'e.g. Packets from the app container are being dropped before reaching the database. The iptables FORWARD chain has an ACCEPT policy.' },
-      { key: 'reasoning_hint', label: 'Reasoning Hint', badge: 'H', tip: 'Explicit instruction on how to reason (blank = default CoT)', rows: 2, placeholder: 'e.g. Think through each layer of the network stack before proposing a fix. Show your reasoning.' },
-      { key: 'output_format',  label: 'Output Format',  badge: 'O', tip: 'How to present the final answer after reasoning',            rows: 2, placeholder: 'e.g. Provide root cause analysis first, then a concrete fix with commands.' }
+      { key: 'role',           label: 'Role',           badge: 'R', tip: 'Expert persona for reasoning quality',    rows: 2, ph: 'e.g. Network security analyst with deep knowledge of firewall rules.' },
+      { key: 'problem',        label: 'Problem',        badge: 'P', tip: 'Complex question requiring reasoning',    rows: 3, ph: 'e.g. Packets from the app container are dropped before the database despite FORWARD ACCEPT policy.' },
+      { key: 'reasoning_hint', label: 'Reasoning Hint', badge: 'H', tip: 'How to reason (blank = default CoT)',    rows: 2, ph: 'e.g. Think through each network layer before proposing a fix. Show reasoning.' },
+      { key: 'output_format',  label: 'Output Format',  badge: 'O', tip: 'How to present the final answer',        rows: 2, ph: 'e.g. Root cause first, then a concrete fix with commands.' }
     ]
   },
   fewshot: {
     label: 'Few-Shot',
-    desc: '<strong>R</strong>ole · <strong>T</strong>ask · <strong>E</strong>xample Input/Output · <strong>F</strong>ormat — shows the LLM what "good" looks like before asking it to generalize. Essential for consistent tone, classification, or transformation tasks.',
+    desc: '<strong>R</strong>ole · <strong>T</strong>ask · <strong>E</strong>xample Input/Output · <strong>F</strong>ormat — shows what "good" looks like. Essential for consistent tone or transformation tasks.',
     fields: [
-      { key: 'role',           label: 'Role',           badge: 'R',  tip: 'The persona and behavioral guidelines',                  rows: 2, placeholder: 'e.g. You are a technical writer who summarizes DevOps runbooks into concise one-liners.' },
-      { key: 'task',           label: 'Task',           badge: 'T',  tip: 'What to do with each new input',                        rows: 2, placeholder: 'e.g. Given a raw runbook step, rewrite it as a single clear action sentence under 20 words.' },
-      { key: 'example_input',  label: 'Example Input',  badge: 'E↓', tip: 'A concrete example of the input you will provide',     rows: 2, placeholder: 'e.g. "SSH into the primary node, navigate to /etc/conjur, and edit the config.yml file."' },
-      { key: 'example_output', label: 'Example Output', badge: 'E↑', tip: 'The ideal output for the example input above',         rows: 2, placeholder: 'e.g. "Edit /etc/conjur/config.yml on the primary node."' },
-      { key: 'format',         label: 'Format',         badge: 'F',  tip: 'Structural pattern for all real responses',            rows: 2, placeholder: 'e.g. One sentence per step. No bullets. Active voice.' }
+      { key: 'role',           label: 'Role',           badge: 'R',  tip: 'Persona and behavioral guidelines',    rows: 2, ph: 'e.g. Technical writer who summarizes runbooks into one-liners.' },
+      { key: 'task',           label: 'Task',           badge: 'T',  tip: 'What to do with each input',           rows: 2, ph: 'e.g. Rewrite a runbook step as a single clear sentence under 20 words.' },
+      { key: 'example_input',  label: 'Example Input',  badge: 'E↓', tip: 'Concrete input example',              rows: 2, ph: 'e.g. "SSH into the node, navigate to /etc/app, and edit config.yml"' },
+      { key: 'example_output', label: 'Example Output', badge: 'E↑', tip: 'Ideal output for the example above',  rows: 2, ph: 'e.g. "Edit /etc/config.yml on the primary node."' },
+      { key: 'format',         label: 'Format',         badge: 'F',  tip: 'Structural pattern for all responses', rows: 2, ph: 'e.g. One sentence per step. No bullets. Active voice.' }
     ]
   },
   react: {
     label: 'ReAct',
-    desc: '<strong>R</strong>ole · <strong>P</strong>roblem · <strong>A</strong>vailable Actions · <strong>O</strong>utput Format — Reasoning + Acting. The LLM alternates Thought → Action → Observation loops. Best for agentic, tool-using scenarios.',
+    desc: '<strong>R</strong>ole · <strong>P</strong>roblem · <strong>A</strong>ctions · <strong>O</strong>utput — Reasoning + Acting. Thought/Action/Observation loops for agentic tasks.',
     fields: [
-      { key: 'role',              label: 'Role',              badge: 'R', tip: 'The agent persona and its capabilities',                rows: 2, placeholder: 'e.g. You are an infrastructure automation agent with access to shell commands and Conjur CLI.' },
-      { key: 'problem',           label: 'Problem',           badge: 'P', tip: 'The multi-step task or question to reason through',     rows: 3, placeholder: 'e.g. Provision Conjur access for a new app, verify it works, and report back.' },
-      { key: 'available_actions', label: 'Available Actions', badge: 'A', tip: 'Tools, commands, or APIs the agent can invoke',        rows: 3, placeholder: 'e.g. conjur policy load, conjur variable get, docker exec, curl (health checks), kubectl get pods' },
-      { key: 'output_format',     label: 'Output Format',     badge: 'O', tip: 'How to structure Thought/Action/Observation and final answer', rows: 2, placeholder: 'e.g. Show each step as Thought: / Action: / Observation: blocks, end with Final Answer:' }
+      { key: 'role',              label: 'Role',              badge: 'R', tip: 'Agent persona and capabilities',              rows: 2, ph: 'e.g. Infrastructure agent with access to shell commands and kind CLI.' },
+      { key: 'problem',           label: 'Problem',           badge: 'P', tip: 'Multi-step task to reason through',           rows: 3, ph: 'e.g. Provision user access for a new app, verify it, and report back.' },
+      { key: 'available_actions', label: 'Available Actions', badge: 'A', tip: 'Tools/commands the agent can invoke',         rows: 3, ph: 'e.g. app policy load, docker exec, curl' },
+      { key: 'output_format',     label: 'Output Format',     badge: 'O', tip: 'How to format Thought/Action/Observation',   rows: 2, ph: 'e.g. Thought: / Action: / Observation: blocks, ending with Final Answer:' }
     ]
   }
 };
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
+// VISUAL DEFINITIONS
+// ════════════════════════════════════════════════════════════════════════════
+const IMAGE_FIELDS = [
+  { key: 'subject',         label: 'Subject',          badge: 'S',  tip: 'Main subject, character, or object and what they are doing', rows: 2, ph: 'e.g. A weathered astronaut floating in zero gravity, looking out a porthole' },
+  { key: 'setting',         label: 'Setting / Environment', badge: 'E', tip: 'Where the scene takes place',                          rows: 2, ph: 'e.g. Aboard a vintage Soviet-era space station, Earth visible in the background' },
+  { key: 'art_style',       label: 'Art Style',        badge: 'A',  tip: 'Visual medium and aesthetic (photorealistic, oil painting, anime...)', rows: 1, ph: 'e.g. Photorealistic, cinematic photography, 35mm film grain' },
+  { key: 'lighting',        label: 'Lighting',         badge: 'L',  tip: 'Light quality, direction, and source',                    rows: 1, ph: 'e.g. Dramatic side lighting from the porthole, deep space shadows' },
+  { key: 'camera',          label: 'Camera / Composition', badge: 'C', tip: 'Lens, framing, shot type, perspective',               rows: 1, ph: 'e.g. Medium close-up, 50mm lens, rule of thirds, shallow depth of field' },
+  { key: 'mood',            label: 'Mood / Atmosphere', badge: 'M', tip: 'Emotional tone and feel',                                rows: 1, ph: 'e.g. Contemplative, isolated, awe-inspiring, solitary grandeur' },
+  { key: 'color_palette',   label: 'Color Palette',    badge: 'P',  tip: 'Dominant colors, saturation, temperature',               rows: 1, ph: 'e.g. Muted earth tones, deep blacks, cold blue starlight, warm amber interior' },
+  { key: 'quality_tags',    label: 'Quality / Detail', badge: 'Q',  tip: 'Resolution and quality descriptors',                    rows: 1, ph: 'e.g. 8K, hyperdetailed, sharp focus, masterpiece, professional photography' },
+  { key: 'negative_prompt', label: 'Negative Prompt',  badge: '–',  tip: 'What to exclude from the image (most effective in SD/Flux)', rows: 2, ph: 'e.g. blurry, deformed, extra limbs, text, watermark, low quality, cartoonish' }
+];
+
+const VIDEO_FIELDS = [
+  { key: 'scene',            label: 'Scene Description', badge: 'S', tip: 'Full description of the scene and its contents',          rows: 3, ph: 'e.g. A misty forest at dawn, ancient redwood trees towering overhead, shafts of golden light filtering through the canopy' },
+  { key: 'subject_motion',   label: 'Subject Motion',    badge: 'M', tip: 'What subjects are doing and how they move',               rows: 2, ph: 'e.g. A fox trots slowly along a narrow dirt path, pausing to sniff the air' },
+  { key: 'camera_movement',  label: 'Camera Movement',   badge: 'K', tip: 'How the camera moves — this is the most critical element', rows: 1, ph: 'e.g. Slow cinematic dolly forward, steady and smooth' },
+  { key: 'shot_type',        label: 'Shot Type',         badge: 'T', tip: 'Framing — wide, medium, close-up, aerial...',            rows: 1, ph: 'e.g. Wide establishing shot transitioning to medium tracking shot' },
+  { key: 'lighting',         label: 'Lighting & Time',   badge: 'L', tip: 'Light quality, time of day, atmospheric conditions',     rows: 1, ph: 'e.g. Early morning golden hour, soft diffused light, morning mist catching the sun' },
+  { key: 'mood_style',       label: 'Mood / Visual Style', badge: 'V', tip: 'Aesthetic and emotional feel',                         rows: 1, ph: 'e.g. Cinematic, peaceful, high contrast, 4K nature documentary style' },
+  { key: 'audio_cue',        label: 'Audio Cue',         badge: 'A', tip: 'Sound suggestion (used by some platforms for guidance)',  rows: 1, ph: 'e.g. Gentle wind through leaves, distant bird calls, no music' },
+  { key: 'duration_pacing',  label: 'Duration / Pacing', badge: 'D', tip: 'Length and rhythm of the clip',                         rows: 1, ph: 'e.g. 5-second clip, slow and unhurried pace' }
+];
+
+const IMAGE_PLATFORMS = [
+  { id: 'universal',       label: 'Universal',    hint: 'Works across all generators — Midjourney, DALL-E, SD, Flux, Firefly' },
+  { id: 'midjourney',      label: 'Midjourney',   hint: 'Optimized for Midjourney v6 — natural language + --parameter flags' },
+  { id: 'dalle3',          label: 'DALL-E 3',     hint: 'Conversational sentences, no parameter syntax, style explicitly stated' },
+  { id: 'stablediffusion', label: 'SD / Auto1111',hint: 'Comma-separated tags, (weight:1.2) syntax, includes Negative Prompt section' },
+  { id: 'flux',            label: 'Flux',         hint: 'Flux.1 by Black Forest Labs — natural language with quality anchors' },
+  { id: 'firefly',         label: 'Firefly',      hint: 'Adobe Firefly — copyright-safe, commercial-grade, no artist names' }
+];
+
+const VIDEO_PLATFORMS = [
+  { id: 'universal', label: 'Universal',    hint: 'Best practices for all video generators — Sora, Runway, Pika, Kling, Luma' },
+  { id: 'sora',      label: 'Sora',         hint: 'OpenAI Sora — detailed cinematic prose, explicit camera and motion language' },
+  { id: 'runway',    label: 'Runway Gen-3', hint: 'Runway Gen-3 Alpha — concise, action-focused, camera motion critical' },
+  { id: 'pika',      label: 'Pika',         hint: 'Pika Labs — motion verbs, camera keywords, punchy and concrete' },
+  { id: 'kling',     label: 'Kling',        hint: 'Kling AI — detailed natural language, human motion, cinematic terminology' },
+  { id: 'luma',      label: 'Luma',         hint: 'Luma Dream Machine — photorealistic focus, lighting and atmosphere emphasis' }
+];
+
+// ════════════════════════════════════════════════════════════════════════════
 // STATE
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 let currentMode      = 'quick';
 let currentFramework = 'costar';
 let currentStyle     = 'precise';
+let currentVType     = 'image';            // 'image' | 'video'
+let currentPlatform  = 'universal';
+let currentOutputLang = 'en';             // 'en' | 'es'
 let isStreaming      = false;
 let isAnalyzing      = false;
 let currentText      = '';
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 // DOM REFS
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 const modelSelect      = document.getElementById('modelSelect');
 const rawInput         = document.getElementById('rawInput');
 const structuredRaw    = document.getElementById('structuredRaw');
+const visualRaw        = document.getElementById('visualRaw');
 const outputContent    = document.getElementById('outputContent');
 const placeholder      = document.getElementById('outputPlaceholder');
 const forgeBtn         = document.getElementById('forgeBtn');
@@ -935,91 +873,157 @@ const copyBtn          = document.getElementById('copyBtn');
 const charCount        = document.getElementById('charCount');
 const statusDot        = document.getElementById('statusDot');
 const statusText       = document.getElementById('statusText');
-const errorToast       = document.getElementById('errorToast');
-const infoToast        = document.getElementById('infoToast');
 const footerStatus     = document.getElementById('footerStatus');
 const modeHint         = document.getElementById('modeHint');
-const quickMode        = document.getElementById('quickMode');
-const structuredModeEl = document.getElementById('structuredMode');
-const fieldsContainer  = document.getElementById('fieldsContainer');
-const fwDesc           = document.getElementById('fwDesc');
 const outputMeta       = document.getElementById('outputMeta');
 const metaMode         = document.getElementById('metaMode');
-const metaFw           = document.getElementById('metaFw');
+const metaDetail       = document.getElementById('metaDetail');
 const metaModel        = document.getElementById('metaModel');
+const metaLang         = document.getElementById('metaLang');
+const outputDot        = document.getElementById('outputDot');
+const tokCount         = document.getElementById('tokCount');
+const charCountOut     = document.getElementById('charCountOut');
+const fwDesc           = document.getElementById('fwDesc');
+const fwFields         = document.getElementById('fwFields');
+const visualFields     = document.getElementById('visualFields');
+const platformBtns     = document.getElementById('platformBtns');
+const platformHint     = document.getElementById('platformHint');
+const visualTypeHint   = document.getElementById('visualTypeHint');
+const visualBadge      = document.getElementById('visualBadge');
 
-// ════════════════════════════════════════════════════════════════
-// TOAST HELPERS
-// ════════════════════════════════════════════════════════════════
-let errorTimer = null, infoTimer = null;
+// ════════════════════════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════════════════════════
+const toasts = {
+  error: document.getElementById('toastError'),
+  info:  document.getElementById('toastInfo'),
+  img:   document.getElementById('toastImg'),
+  vid:   document.getElementById('toastVid')
+};
+const toastTimers = {};
 
-function showError(msg) {
-  errorToast.textContent = msg;
-  errorToast.classList.add('show');
-  clearTimeout(errorTimer);
-  errorTimer = setTimeout(() => errorToast.classList.remove('show'), 5000);
+function toast(type, msg) {
+  const el = toasts[type] || toasts.info;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimers[type]);
+  toastTimers[type] = setTimeout(() => el.classList.remove('show'), 4500);
 }
 
-function showInfo(msg) {
-  infoToast.textContent = msg;
-  infoToast.classList.add('show');
-  clearTimeout(infoTimer);
-  infoTimer = setTimeout(() => infoToast.classList.remove('show'), 3000);
-}
-
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 // STATUS
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 function setStatus(state, label) {
   statusDot.className = 'status-dot ' + (state || '');
   statusText.textContent = label;
 }
 
-function setFooterStatus(msg) { footerStatus.textContent = msg; }
+function setFooter(msg) { footerStatus.textContent = msg; }
 
-// ════════════════════════════════════════════════════════════════
-// FRAMEWORK FIELD RENDERER
-// ════════════════════════════════════════════════════════════════
-function renderFields(fw) {
-  const def = FRAMEWORKS[fw];
-  fwDesc.innerHTML = def.desc;
-  fieldsContainer.innerHTML = '';
+// ════════════════════════════════════════════════════════════════════════════
+// FORGE BUTTON THEMING
+// ════════════════════════════════════════════════════════════════════════════
+function updateForgeTheme() {
+  forgeBtn.className = 'forge-btn';
+  if (currentMode === 'quick')      forgeBtn.classList.add('mode-quick');
+  else if (currentMode === 'structured') forgeBtn.classList.add('mode-structured');
+  else if (currentVType === 'image') forgeBtn.classList.add('mode-visual-img');
+  else                               forgeBtn.classList.add('mode-visual-vid');
 
-  def.fields.forEach(f => {
-    const group = document.createElement('div');
-    group.className = 'field-group';
-
-    const labelEl = document.createElement('div');
-    labelEl.className = 'field-label';
-    labelEl.innerHTML = `${f.label} <span class="field-badge">${f.badge}</span>`;
-    group.appendChild(labelEl);
-
-    const tip = document.createElement('div');
-    tip.className = 'field-tip';
-    tip.textContent = f.tip;
-    group.appendChild(tip);
-
-    const input = f.rows > 1
-      ? document.createElement('textarea')
-      : document.createElement('input');
-    input.className = 'field-input';
-    input.id = `field_${f.key}`;
-    input.placeholder = f.placeholder;
-    if (f.rows > 1) input.rows = f.rows;
-
-    input.addEventListener('input', () => {
-      input.classList.toggle('filled', input.value.trim().length > 0);
-    });
-
-    group.appendChild(input);
-    fieldsContainer.appendChild(group);
-  });
+  // Output dot
+  outputDot.className = 'dot';
+  if (currentMode === 'quick')           outputDot.classList.add('dot-y');
+  else if (currentMode === 'structured') outputDot.classList.add('dot-c');
+  else if (currentVType === 'image')     outputDot.classList.add('dot-o');
+  else                                   outputDot.classList.add('dot-v');
 }
 
-// ════════════════════════════════════════════════════════════════
-// COLLECT + POPULATE FIELDS
-// ════════════════════════════════════════════════════════════════
-function collectFields(fw) {
+// ════════════════════════════════════════════════════════════════════════════
+// FIELD RENDERER — TEXT FRAMEWORKS
+// ════════════════════════════════════════════════════════════════════════════
+function renderFwFields(fw) {
+  const def = FRAMEWORKS[fw];
+  fwDesc.innerHTML = def.desc;
+  fwFields.innerHTML = '';
+  def.fields.forEach(f => fwFields.appendChild(buildFieldEl(f, 'fw')));
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// FIELD RENDERER — VISUAL
+// ════════════════════════════════════════════════════════════════════════════
+function renderVisualFields(vtype) {
+  visualFields.innerHTML = '';
+  const fields = vtype === 'image' ? IMAGE_FIELDS : VIDEO_FIELDS;
+  const badgeType = vtype === 'image' ? 'img' : 'vid';
+  fields.forEach(f => visualFields.appendChild(buildFieldEl(f, badgeType)));
+}
+
+function buildFieldEl(f, badgeType) {
+  const group = document.createElement('div');
+  group.className = 'field-group';
+
+  const lbl = document.createElement('div');
+  lbl.className = 'field-label';
+  lbl.innerHTML = `${f.label} <span class="field-badge ${badgeType}">${f.badge}</span>`;
+  group.appendChild(lbl);
+
+  const tip = document.createElement('div');
+  tip.className = 'field-tip';
+  tip.textContent = f.tip;
+  group.appendChild(tip);
+
+  const el = (f.rows > 1)
+    ? document.createElement('textarea')
+    : document.createElement('input');
+  el.className = 'field-input';
+  el.id = `field_${f.key}`;
+  el.placeholder = f.ph;
+  if (f.rows > 1) el.rows = f.rows;
+
+  el.addEventListener('input', () => {
+    el.classList.remove('filled-fw', 'filled-img', 'filled-vid');
+    if (el.value.trim()) el.classList.add(`filled-${badgeType}`);
+  });
+
+  group.appendChild(el);
+  return group;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// PLATFORM RENDERER
+// ════════════════════════════════════════════════════════════════════════════
+function renderPlatforms(vtype) {
+  platformBtns.innerHTML = '';
+  const platforms = vtype === 'image' ? IMAGE_PLATFORMS : VIDEO_PLATFORMS;
+  const activeClass = vtype === 'image' ? 'active-img' : 'active-vid';
+
+  platforms.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'platform-btn' + (p.id === currentPlatform ? ` ${activeClass}` : '');
+    btn.textContent = p.label;
+    btn.dataset.platform = p.id;
+
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.platform-btn').forEach(b => {
+        b.classList.remove('active-img', 'active-vid');
+      });
+      btn.classList.add(activeClass);
+      currentPlatform = p.id;
+      platformHint.textContent = p.hint;
+    });
+
+    platformBtns.appendChild(btn);
+  });
+
+  // Set hint for default selected
+  const def = platforms.find(p => p.id === currentPlatform) || platforms[0];
+  platformHint.textContent = def.hint;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// COLLECT FIELDS
+// ════════════════════════════════════════════════════════════════════════════
+function collectFwFields(fw) {
   const out = {};
   FRAMEWORKS[fw].fields.forEach(f => {
     const el = document.getElementById(`field_${f.key}`);
@@ -1028,50 +1032,69 @@ function collectFields(fw) {
   return out;
 }
 
-function populateFields(fw, data) {
-  FRAMEWORKS[fw].fields.forEach(f => {
+function collectVisualFields(vtype) {
+  const out = {};
+  const fields = vtype === 'image' ? IMAGE_FIELDS : VIDEO_FIELDS;
+  fields.forEach(f => {
     const el = document.getElementById(`field_${f.key}`);
-    if (el && data[f.key]) {
-      el.value = data[f.key];
-      el.classList.add('filled');
-    }
+    if (el) out[f.key] = el.value.trim();
   });
+  return out;
 }
 
-// ════════════════════════════════════════════════════════════════
+function getAnalyzeFramework() {
+  if (currentMode === 'structured') return currentFramework;
+  if (currentVType === 'image')     return 'visual_image';
+  return 'visual_video';
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// TOKEN COUNTER
+// ════════════════════════════════════════════════════════════════════════════
+function updateTokenCounter(text) {
+  const chars = text.length;
+  // Standard ~4 chars/token approximation (GPT-style)
+  const tokens = chars === 0 ? 0 : Math.ceil(chars / 4);
+  tokCount.textContent    = tokens.toLocaleString();
+  charCountOut.textContent = chars.toLocaleString();
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 // OUTPUT HELPERS
-// ════════════════════════════════════════════════════════════════
-function showLoadingShimmer() {
+// ════════════════════════════════════════════════════════════════════════════
+function showShimmer() {
   placeholder.style.display = 'none';
-  outputContent.innerHTML = `
-    <div style="padding:24px;">
-      <div class="loading-line" style="width:90%"></div>
-      <div class="loading-line"></div>
-      <div class="loading-line"></div>
-      <div class="loading-line"></div>
-      <div class="loading-line"></div>
-    </div>`;
+  outputContent.innerHTML = `<div style="padding:22px;">
+    <div class="loading-line" style="width:91%"></div>
+    <div class="loading-line"></div>
+    <div class="loading-line"></div>
+    <div class="loading-line"></div>
+    <div class="loading-line"></div>
+  </div>`;
 }
 
 function startStreaming() {
   outputContent.innerHTML = '<span class="cursor"></span>';
   currentText = '';
+  updateTokenCounter('');
 }
 
 function appendToken(token) {
   currentText += token;
   const cursor = outputContent.querySelector('.cursor');
   if (cursor) cursor.remove();
-  outputContent.textContent = currentText;   // XSS-safe: textContent only; never innerHTML for token data
+  outputContent.textContent = currentText;   // XSS-safe: textContent only
   outputContent.appendChild(
     Object.assign(document.createElement('span'), { className: 'cursor' })
   );
+  updateTokenCounter(currentText);
 }
 
 function finishStreaming() {
   const cursor = outputContent.querySelector('.cursor');
   if (cursor) cursor.remove();
   outputContent.textContent = currentText;
+  updateTokenCounter(currentText);
 }
 
 function clearOutput() {
@@ -1082,12 +1105,25 @@ function clearOutput() {
   outputMeta.style.display = 'none';
   copyBtn.classList.remove('success');
   copyBtn.textContent = '⎘';
-  setFooterStatus('idle · ' + (modelSelect.value || 'no model'));
+  updateTokenCounter('');
+  setFooter('idle · ' + (modelSelect.value || 'no model'));
 }
 
-// ════════════════════════════════════════════════════════════════
+function setOutputMeta(modeLabel, modeClass, detail, detailClass, model) {
+  outputMeta.style.display = 'flex';
+  metaMode.textContent    = modeLabel;
+  metaMode.className      = `meta-badge ${modeClass}`;
+  metaDetail.textContent  = detail;
+  metaDetail.className    = `meta-badge ${detailClass}`;
+  metaModel.textContent   = model;
+  metaModel.className     = 'meta-badge';
+  metaLang.textContent    = currentOutputLang === 'es' ? 'Español' : 'English';
+  metaLang.className      = 'meta-badge m-lang';
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 // LOAD MODELS
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 async function loadModels() {
   try {
     const res  = await fetch('/api/models');
@@ -1102,35 +1138,45 @@ async function loadModels() {
     ).join('');
 
     setStatus('online', `${models.length} model${models.length !== 1 ? 's' : ''}`);
-    forgeBtn.disabled = false;
-    if (currentMode === 'structured') autofillBtn.disabled = false;
-    setFooterStatus(`ready · ${models[0].name}`);
+    forgeBtn.disabled   = false;
+    autofillBtn.disabled = false;
+    setFooter(`ready · ${models[0].name}`);
 
   } catch (err) {
     setStatus('error', 'ollama unreachable');
     modelSelect.innerHTML = '<option value="">— cannot connect —</option>';
-    showError('Cannot reach Ollama. Check OLLAMA_URL → ' + err.message);
-    setFooterStatus('error: ' + err.message);
+    toast('error', 'Cannot reach Ollama — check OLLAMA_URL → ' + err.message);
+    setFooter('error: ' + err.message);
   }
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 // AUTO-FILL
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 async function autofill() {
-  const raw = structuredRaw.value.trim() || rawInput.value.trim();
-  if (!raw) { showError('Enter your raw intent first (top field in Structured mode).'); return; }
+  const rawEl = currentMode === 'structured' ? structuredRaw : visualRaw;
+  const raw = rawEl.value.trim() || rawInput.value.trim();
+  if (!raw) { toast('error', 'Enter your intent first before auto-filling.'); return; }
+
   const model = modelSelect.value;
-  if (!model) { showError('Select a model first.'); return; }
+  if (!model) { toast('error', 'Select a model first.'); return; }
   if (isAnalyzing || isStreaming) return;
+
+  const analyzeFramework = getAnalyzeFramework();
+  const isVisualFill     = currentMode === 'visual';
+  const fieldDefs = isVisualFill
+    ? (currentVType === 'image' ? IMAGE_FIELDS : VIDEO_FIELDS)
+    : FRAMEWORKS[currentFramework].fields;
+  const fieldsContainer = isVisualFill ? visualFields : fwFields;
+  const toastType = currentVType === 'video' ? 'vid' : (isVisualFill ? 'img' : 'info');
 
   isAnalyzing = true;
   autofillBtn.disabled = true;
   autofillBtn.textContent = 'Analyzing…';
-  setFooterStatus(`analyzing with ${model}…`);
+  setFooter(`analyzing · ${model}…`);
 
-  const def = FRAMEWORKS[currentFramework];
-  def.fields.forEach(f => {
+  // Shimmer all fields
+  fieldDefs.forEach(f => {
     const el = document.getElementById(`field_${f.key}`);
     if (el) el.classList.add('analyzing');
   });
@@ -1139,12 +1185,12 @@ async function autofill() {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rawPrompt: raw, framework: currentFramework, model })
+      body: JSON.stringify({ rawPrompt: raw, framework: analyzeFramework, model, outputLang: currentOutputLang })
     });
 
     const data = await res.json();
 
-    def.fields.forEach(f => {
+    fieldDefs.forEach(f => {
       const el = document.getElementById(`field_${f.key}`);
       if (el) el.classList.remove('analyzing');
     });
@@ -1152,63 +1198,73 @@ async function autofill() {
     if (data.error) throw new Error(data.error);
 
     if (data.fields && Object.keys(data.fields).length > 0) {
-      populateFields(currentFramework, data.fields);
-      showInfo(`Fields auto-filled · ${currentFramework.toUpperCase()} ✓`);
-      setFooterStatus('fields filled · ready to forge');
-    } else if (data.raw_fallback) {
-      showError('Model did not return valid JSON. Try a more capable model.');
-      setFooterStatus('analyze parse error');
+      const badgeType = isVisualFill ? (currentVType === 'image' ? 'img' : 'vid') : 'fw';
+      Object.entries(data.fields).forEach(([k, v]) => {
+        const el = document.getElementById(`field_${k}`);
+        if (el && v) {
+          el.value = v;
+          el.classList.remove('filled-fw', 'filled-img', 'filled-vid');
+          el.classList.add(`filled-${badgeType}`);
+        }
+      });
+      toast(toastType, `Fields populated · ${analyzeFramework.toUpperCase()} ✓`);
+      setFooter('fields filled · ready to forge');
+    } else {
+      toast('error', 'Model did not return valid JSON. Try a more capable model (7B+).');
+      setFooter('analyze parse error');
     }
 
   } catch (err) {
-    def.fields.forEach(f => {
+    fieldDefs.forEach(f => {
       const el = document.getElementById(`field_${f.key}`);
       if (el) el.classList.remove('analyzing');
     });
-    showError('Auto-fill failed: ' + err.message);
-    setFooterStatus('error');
+    toast('error', 'Auto-fill failed: ' + err.message);
+    setFooter('error');
   } finally {
     isAnalyzing = false;
     autofillBtn.disabled = false;
     autofillBtn.innerHTML = `
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
       </svg>
       Auto-Fill Fields`;
   }
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 // FORGE
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 async function forge() {
   const model = modelSelect.value;
-  if (!model) { showError('Select a model first.'); return; }
+  if (!model)   { toast('error', 'Select a model first.'); return; }
   if (isStreaming || isAnalyzing) return;
 
-  let rawPrompt, requestBody;
+  let body;
 
   if (currentMode === 'quick') {
-    rawPrompt = rawInput.value.trim();
-    if (!rawPrompt) { showError('Enter a prompt first.'); return; }
-    requestBody = { rawPrompt, model, style: currentStyle, mode: 'quick' };
-  } else {
-    rawPrompt = structuredRaw.value.trim();
-    if (!rawPrompt) { showError('Enter your raw intent in the top field.'); return; }
-    const fields = collectFields(currentFramework);
-    const hasAnyField = Object.values(fields).some(v => v.trim());
-    if (!hasAnyField) {
-      showError('Fill at least one framework field, or use Auto-Fill to populate them.');
-      return;
+    const raw = rawInput.value.trim();
+    if (!raw) { toast('error', 'Enter a prompt first.'); return; }
+    body = { rawPrompt: raw, model, style: currentStyle, mode: 'quick', outputLang: currentOutputLang };
+
+  } else if (currentMode === 'structured') {
+    const raw = structuredRaw.value.trim();
+    if (!raw) { toast('error', 'Enter your raw intent in the top field.'); return; }
+    const fields = collectFwFields(currentFramework);
+    if (!Object.values(fields).some(v => v.trim())) {
+      toast('error', 'Fill at least one field, or use Auto-Fill.'); return;
     }
-    requestBody = {
-      rawPrompt,
-      model,
-      style: currentStyle,
-      mode: 'structured',
-      framework: currentFramework,
-      fields
-    };
+    body = { rawPrompt: raw, model, style: currentStyle, mode: 'structured', framework: currentFramework, fields, outputLang: currentOutputLang };
+
+  } else {
+    // Visual
+    const raw = visualRaw.value.trim();
+    if (!raw) { toast('error', 'Enter your visual intent in the Raw Intent field.'); return; }
+    const fields = collectVisualFields(currentVType);
+    if (!Object.values(fields).some(v => v.trim())) {
+      toast('error', 'Fill at least one field, or use Auto-Fill.'); return;
+    }
+    body = { rawPrompt: raw, model, mode: 'visual', visualType: currentVType, platform: currentPlatform, fields, outputLang: currentOutputLang };
   }
 
   isStreaming = true;
@@ -1216,19 +1272,18 @@ async function forge() {
   forgeBtn.textContent = 'Forging…';
   copyBtn.classList.remove('success');
   copyBtn.textContent = '⎘';
-  setFooterStatus(`streaming · ${model}`);
+  setFooter(`streaming · ${model}`);
 
-  showLoadingShimmer();
-  await new Promise(r => setTimeout(r, 280));
+  showShimmer();
+  await new Promise(r => setTimeout(r, 260));
   startStreaming();
 
   try {
     const res = await fetch('/api/reformat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(body)
     });
-
     if (!res.ok) throw new Error(`Server error ${res.status}`);
 
     const reader  = res.body.getReader();
@@ -1240,13 +1295,13 @@ async function forge() {
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split('\n');
-      buffer = lines.pop(); // retain incomplete trailing line
+      buffer = lines.pop();
 
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
         try {
           const json = JSON.parse(line.slice(6));
-          if (json.error) { showError(json.error); break; }
+          if (json.error) { toast('error', json.error); break; }
           if (json.token) appendToken(json.token);
           if (json.done)  finishStreaming();
         } catch (_) {}
@@ -1254,65 +1309,115 @@ async function forge() {
     }
 
     finishStreaming();
-    setFooterStatus('done ✓ · ' + model);
+    setFooter('done ✓ · ' + model);
 
-    outputMeta.style.display = 'flex';
-    metaMode.textContent  = currentMode === 'quick' ? 'Quick' : 'Structured';
-    metaMode.className    = currentMode === 'quick' ? 'meta-badge mode-q' : 'meta-badge';
-    metaFw.textContent    = currentMode === 'structured'
-      ? FRAMEWORKS[currentFramework].label
-      : currentStyle;
-    metaModel.textContent = model;
+    if (currentMode === 'quick') {
+      setOutputMeta('Quick', 'm-q', currentStyle, 'm-q', model);
+    } else if (currentMode === 'structured') {
+      setOutputMeta('Structured', 'm-s', FRAMEWORKS[currentFramework].label, 'm-s', model);
+    } else {
+      const pLabel = (currentVType === 'image' ? IMAGE_PLATFORMS : VIDEO_PLATFORMS)
+        .find(p => p.id === currentPlatform)?.label || currentPlatform;
+      const mClass = currentVType === 'image' ? 'm-img' : 'm-vid';
+      setOutputMeta(currentVType === 'image' ? 'Image' : 'Video', mClass, pLabel, mClass, model);
+    }
 
   } catch (err) {
-    showError(err.message);
-    setFooterStatus('error');
+    toast('error', err.message);
+    setFooter('error');
   } finally {
     isStreaming = false;
     forgeBtn.disabled = false;
     forgeBtn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
       </svg>
       Forge Prompt`;
+    updateForgeTheme();
   }
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 // EVENT WIRING
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
+
+// Mode buttons
 document.querySelectorAll('.mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentMode = btn.dataset.mode;
 
+    document.getElementById('quickMode').style.display      = 'none';
+    document.getElementById('structuredMode').style.display = 'none';
+    document.getElementById('visualMode').style.display     = 'none';
+
+    autofillBtn.classList.remove('show', 'vis-img', 'vis-vid');
+
     if (currentMode === 'quick') {
-      quickMode.style.display = 'flex';
-      quickMode.style.flexDirection = 'column';
-      quickMode.style.flex = '1';
-      structuredModeEl.style.display = 'none';
-      autofillBtn.style.display = 'none';
+      document.getElementById('quickMode').style.display = 'flex';
+      document.getElementById('quickMode').style.flexDirection = 'column';
       modeHint.textContent = 'Reformat raw text into a better prompt';
+    } else if (currentMode === 'structured') {
+      document.getElementById('structuredMode').style.display = 'flex';
+      autofillBtn.classList.add('show');
+      autofillBtn.className = 'autofill-btn show';
+      modeHint.textContent = 'Build with frameworks — Auto-Fill to get started';
     } else {
-      quickMode.style.display = 'none';
-      structuredModeEl.style.display = 'flex';
-      autofillBtn.style.display = 'flex';
-      autofillBtn.disabled = !modelSelect.value;
-      modeHint.textContent = 'Build with a framework — use Auto-Fill to get started';
+      document.getElementById('visualMode').style.display = 'flex';
+      autofillBtn.classList.add('show');
+      const cls = currentVType === 'image' ? 'vis-img' : 'vis-vid';
+      autofillBtn.classList.add(cls);
+      modeHint.textContent = currentVType === 'image'
+        ? 'Generate prompts for AI image models'
+        : 'Generate prompts for AI video models';
     }
+
+    updateForgeTheme();
   });
 });
 
+// Visual type buttons
+document.querySelectorAll('.vtype-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vtype-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentVType    = btn.dataset.vtype;
+    currentPlatform = 'universal';
+
+    renderVisualFields(currentVType);
+    renderPlatforms(currentVType);
+
+    visualTypeHint.textContent = currentVType === 'image'
+      ? 'Build prompts for AI image generators'
+      : 'Build prompts for AI video generators';
+
+    visualBadge.textContent = currentVType;
+    visualBadge.className   = `field-badge ${currentVType === 'image' ? 'img' : 'vid'}`;
+    visualRaw.placeholder   = currentVType === 'image'
+      ? 'Describe what you want to generate… (e.g. "a lone lighthouse on a foggy cliff at midnight")'
+      : 'Describe the video scene… (e.g. "a drone flying over a city at sunset")';
+
+    autofillBtn.className = 'autofill-btn show ' + (currentVType === 'image' ? 'vis-img' : 'vis-vid');
+    modeHint.textContent  = currentVType === 'image'
+      ? 'Generate prompts for AI image models'
+      : 'Generate prompts for AI video models';
+
+    updateForgeTheme();
+  });
+});
+
+// Framework tabs
 document.querySelectorAll('.fw-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.fw-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     currentFramework = tab.dataset.fw;
-    renderFields(currentFramework);
+    renderFwFields(currentFramework);
   });
 });
 
+// Style tabs
 document.querySelectorAll('.style-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.style-tab').forEach(t => t.classList.remove('active'));
@@ -1321,53 +1426,76 @@ document.querySelectorAll('.style-tab').forEach(tab => {
   });
 });
 
-rawInput.addEventListener('input', () => {
-  charCount.textContent = rawInput.value.length;
-});
+// Char count
+rawInput.addEventListener('input', () => { charCount.textContent = rawInput.value.length; });
 
+// Model change
 modelSelect.addEventListener('change', () => {
-  setFooterStatus('ready · ' + (modelSelect.value || 'no model'));
-  if (currentMode === 'structured') autofillBtn.disabled = !modelSelect.value;
+  setFooter('ready · ' + (modelSelect.value || 'no model'));
 });
 
-[rawInput, structuredRaw].forEach(el => {
+// Keyboard shortcut — Ctrl/Cmd+Enter on any textarea
+[rawInput, structuredRaw, visualRaw].forEach(el => {
   el.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') forge();
   });
 });
 
+// Clear
 clearBtn.addEventListener('click', () => {
   rawInput.value = '';
   structuredRaw.value = '';
+  visualRaw.value = '';
   charCount.textContent = '0';
-  FRAMEWORKS[currentFramework].fields.forEach(f => {
-    const el = document.getElementById(`field_${f.key}`);
-    if (el) { el.value = ''; el.classList.remove('filled'); }
+
+  // Clear all fw fields
+  Object.values(FRAMEWORKS).forEach(fw => {
+    fw.fields.forEach(f => {
+      const el = document.getElementById(`field_${f.key}`);
+      if (el) { el.value = ''; el.classList.remove('filled-fw', 'filled-img', 'filled-vid'); }
+    });
   });
+  // Clear visual fields
+  [...IMAGE_FIELDS, ...VIDEO_FIELDS].forEach(f => {
+    const el = document.getElementById(`field_${f.key}`);
+    if (el) { el.value = ''; el.classList.remove('filled-fw', 'filled-img', 'filled-vid'); }
+  });
+
   clearOutput();
 });
 
 clearOutputBtn.addEventListener('click', clearOutput);
 
+// Copy
 copyBtn.addEventListener('click', async () => {
   if (!currentText) return;
   try {
     await navigator.clipboard.writeText(currentText);
-    copyBtn.classList.add('success');
-    copyBtn.textContent = '✓';
+    copyBtn.classList.add('success'); copyBtn.textContent = '✓';
     setTimeout(() => { copyBtn.classList.remove('success'); copyBtn.textContent = '⎘'; }, 2000);
-  } catch {
-    showError('Clipboard access denied.');
-  }
+  } catch { toast('error', 'Clipboard access denied.'); }
 });
 
 forgeBtn.addEventListener('click', forge);
 autofillBtn.addEventListener('click', autofill);
 
-// ════════════════════════════════════════════════════════════════
+// Language toggle
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentOutputLang = btn.dataset.lang;
+    setFooter((currentOutputLang === 'es' ? 'Español · ' : 'English · ') + (modelSelect.value || 'no model'));
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
 // INIT
-// ════════════════════════════════════════════════════════════════
-renderFields(currentFramework);
+// ════════════════════════════════════════════════════════════════════════════
+renderFwFields(currentFramework);
+renderVisualFields(currentVType);
+renderPlatforms(currentVType);
+updateForgeTheme();
 loadModels();
 </script>
 </body>
