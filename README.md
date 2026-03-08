@@ -7,7 +7,7 @@
 ![Version|90](https://img.shields.io/badge/version-4.1.0-brightgreen)
 
 > **A self-hosted AI prompt engineering workstation that runs entirely on your local [Ollama](https://ollama.com) instance.**  
-> No cloud APIs. No API keys. No subscriptions. One `docker compose up` and you're live.
+> No cloud APIs. No API keys. No subscriptions. One `docker compose up` and you're live.   
 
 <img width="1659" height="1018" alt="image" src="https://github.com/user-attachments/assets/295226cb-4615-4a79-81ff-f7cd1187d802" />
 
@@ -198,7 +198,7 @@ Expected response:
 {
   "status": "ok",
   "ollama": "http://host.docker.internal:11434",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "logFile": "/data/logs.jsonl"
 }
 ```
@@ -508,7 +508,7 @@ Liveness check.
 {
   "status": "ok",
   "ollama": "http://host.docker.internal:11434",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "logFile": "/data/logs.jsonl"
 }
 ```
