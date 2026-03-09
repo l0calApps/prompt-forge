@@ -134,7 +134,7 @@ Each line is an independent JSON object. `fs.appendFileSync` never needs to read
 ollama pull llama3.2
 
 # 2. Clone the repo
-git clone https://github.com/your-username/prompt-forge.git
+git clone https://github.com/l0calApps/prompt-forge.git
 cd prompt-forge
 
 # 3. Start
