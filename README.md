@@ -1,10 +1,10 @@
-<h1 style="text-align: center;">PromptForge v4.1.1</h1>
+<h1 style="text-align: center;">PromptForge v4.1.2</h1>
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white)
 ![Node](https://img.shields.io/badge/node-20--alpine-339933?logo=node.js&logoColor=white)
 ![Ollama](https://img.shields.io/badge/powered%20by-Ollama-black)
-![Version|90](https://img.shields.io/badge/version-4.1.1-brightgreen)
+![Version|90](https://img.shields.io/badge/version-4.1.2-brightgreen)
 
 > **A self-hosted AI prompt engineering workstation that runs entirely on your local [Ollama](https://ollama.com) instance.**  
 > No cloud APIs. No API keys. No subscriptions. One `docker compose up` and you're live.   
@@ -12,8 +12,7 @@
 ---
 
 ## Screenshot
-<img width="1659" height="1018" alt="image" src="https://github.com/user-attachments/assets/e61be3f1-43cd-4adc-baba-c6562f6fd879" />
-
+<img width="1659" height="1018" alt="image" src="https://github.com/user-attachments/assets/0ebeb241-6b46-44e7-a58e-9488e0a02a9e" />
 
 ---
 
@@ -202,7 +201,7 @@ Expected response:
 {
   "status": "ok",
   "ollama": "http://host.docker.internal:11434",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "logFile": "/data/logs.jsonl"
 }
 ```
@@ -512,7 +511,7 @@ Liveness check.
 {
   "status": "ok",
   "ollama": "http://host.docker.internal:11434",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "logFile": "/data/logs.jsonl"
 }
 ```
@@ -914,4 +913,4 @@ SOFTWARE.
 
 ---
 
-*PromptForge v4.1.1 · Self-hosted · Local-only · MIT License*
+*PromptForge v4.1.2 · Self-hosted · Local-only · MIT License*
