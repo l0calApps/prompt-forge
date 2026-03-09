@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', ollama: OLLAMA_URL, version: '4.1.0', logFile: LOG_FILE });
+  res.json({ status: 'ok', ollama: OLLAMA_URL, version: '4.1.1', logFile: LOG_FILE });
 });
 
 // ── GET /api/logs  — return stored log entries (newest first) ──────────
@@ -331,6 +331,6 @@ Rules:
 });
 
 app.listen(PORT, () => {
-  console.log(`Prompt Forge v4.1 running on http://0.0.0.0:${PORT}`);
+  console.log(`Prompt Forge v4.1.1 running on http://0.0.0.0:${PORT}`);
   console.log(`Ollama endpoint: ${OLLAMA_URL}`);
 });
